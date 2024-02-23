@@ -24,4 +24,13 @@ curl --location 'http://localhost:8080/all/book/1'
 <img width="1280" alt="スクリーンショット 2024-02-22 19 36 38" src="https://github.com/kawara777/Book-Application/assets/138858245/6e6af486-566f-4f50-afa3-2dd5df6e5b5a">
 </div></details>
 
-#### 3. 
+#### 3. ctegoriesテーブルのみのデータをIDで取得
+https://github.com/kawara777/Book-Application/blob/44698238b3e3861adb085e58852b8c45887fa49f/src/main/java/com/ookawara/book_/application/Controller/BookController.java#L32-L35
+```
+curl --location 'http://localhost:8080/all/category/1'
+```
+<details><summary>実行結果</summary><div>
+
+<img width="1280" alt="スクリーンショット 2024-02-22 19 37 50" src="https://github.com/kawara777/Book-Application/assets/138858245/e5db9cd9-a288-4751-baef-04a5f13a39e4">
+
+</div></details>
