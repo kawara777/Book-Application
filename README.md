@@ -12,3 +12,12 @@ curl --location 'http://localhost:8080/all/'
 
   <img width="1280" alt="スクリーンショット 2024-02-22 18 14 15" src="https://github.com/kawara777/Book-Application/assets/138858245/37182655-7fc9-4833-ba17-42fb538481eb">
 </div></details>
+
+#### 1. booksテーブルのみのデータをIDで取得
+```
+curl --location 'http://localhost:8080/all/book/1'
+```
+<details><summary>実行結果</summary><div>
+
+<img width="1280" alt="スクリーンショット 2024-02-22 19 36 38" src="https://github.com/kawara777/Book-Application/assets/138858245/6e6af486-566f-4f50-afa3-2dd5df6e5b5a">
+</div></details>
