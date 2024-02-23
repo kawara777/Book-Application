@@ -62,4 +62,14 @@ curl --location 'http://localhost:8080/all/isPurchased?judgment=0'
 
 </div></details>
 
-#### 6. 
+#### 6. カテゴリーのIDで検索した本のデータを取得
+https://github.com/kawara777/Book-Application/blob/2e832e66f31cd6fcfa49baa185b722ae81dde074/src/main/java/com/ookawara/book_/application/Controller/BookController.java#L47-L50
+```
+curl --location 'http://localhost:8080/all/categories/1'
+```
+
+<details><summary>実行結果</summary><div>
+
+<img width="1280" alt="スクリーンショット 2024-02-22 19 47 18" src="https://github.com/kawara777/Book-Application/assets/138858245/4e8acff3-c7ea-47fe-9521-8af029e642a8">
+
+</div></details>
