@@ -38,7 +38,7 @@ curl --location 'http://localhost:8080/all/category/1'
 #### 4.　booksテーブルのname内で指定文字と前方一致のデータを取得
 https://github.com/kawara777/Book-Application/blob/527c4a0d67a11e45a2139ae62cb70749177af0b1/src/main/java/com/ookawara/book_/application/Controller/BookController.java#L37-L40
 
-今回は「鬼」を指定　　
+今回は「鬼」を指定  
 ※現段階で作成したデータ内で頭文字が同じデータはないためレスポンスは１件のみ
 ```
 curl --location 'http://localhost:8080/all/names?startsWith=%E9%AC%BC'
