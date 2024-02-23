@@ -33,7 +33,7 @@ public class BookController {
         return bookMapper.findByCategoryId(categoryId);
     }
 
-    @GetMapping("/books/name")
+    @GetMapping("/books/names")
     public List<Book> findByName(@RequestParam String startsWith) {
         return bookMapper.findByNameStartingWith(startsWith);
     }
