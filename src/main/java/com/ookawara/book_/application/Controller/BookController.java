@@ -4,6 +4,8 @@ import com.ookawara.book_.application.Mapper.BookMapper;
 import com.ookawara.book_.application.Entity.Book;
 import com.ookawara.book_.application.Entity.BookAllData;
 import com.ookawara.book_.application.Entity.Category;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,14 +40,14 @@ public class BookController {
         return bookMapper.findByNameStartingWith(startsWith);
     }
 
-    @GetMapping("/books/isPurchased")
-    public List<Book> findByIsPurchased(@RequestParam int isPurchased) {
-        return bookMapper.findByIsPurchased(isPurchased);
-    }
-
     @GetMapping("/books/unPurchased")
     public List<Book> findByUnPurchased(@RequestParam int unPurchased) {
         return bookMapper.findByUnPurchased(unPurchased);
+    }
+
+    @GetMapping("/books/isPurchased")
+    public List<Book> findByIsPurchased(@RequestParam int isPurchased) {
+        return bookMapper.findByIsPurchased(isPurchased);
     }
 
     @GetMapping("/books/category/{categoryId}")

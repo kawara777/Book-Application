@@ -24,10 +24,11 @@ public interface BookMapper {
     List<Book> findByNameStartingWith(String prefix);
 
     @Select("select * from books where is_purchased = 0")
-    List<Book> findByIsPurchased(int isPurchased);
+    List<Book> findByUnPurchased(int unPurchased);
 
     @Select("select * from books where is_purchased = 1")
-    List<Book> findByUnPurchased(int unPurchased);
+    List<Book> findByIsPurchased(int isPurchased);
+
 
     @Select("select * from books join categories on books.category_id = categories.id and category_id = #{categoryId}")
     List<BookAllData> findByCategory(int categoryId);
