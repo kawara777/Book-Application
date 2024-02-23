@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/all")
 public class BookController {
 
     private final BookMapper bookMapper;
@@ -19,7 +18,7 @@ public class BookController {
         this.bookMapper = bookMapper;
     }
 
-    @GetMapping
+    @GetMapping("/books")
     public List<BookAllData> findAll() {
         return bookMapper.findAll();
     }
@@ -34,17 +33,22 @@ public class BookController {
         return bookMapper.findByCategoryId(categoryId);
     }
 
-    @GetMapping("/names")
+    @GetMapping("/books/name")
     public List<Book> findByName(@RequestParam String startsWith) {
         return bookMapper.findByNameStartingWith(startsWith);
     }
 
-    @GetMapping("/isPurchased")
-    public List<Book> findByISPurchased(@RequestParam int judgment) {
-        return bookMapper.findByIsPurchased(judgment);
+    @GetMapping("/books/isPurchased")
+    public List<Book> findByIsPurchased(@RequestParam int isPurchased) {
+        return bookMapper.findByIsPurchased(isPurchased);
     }
 
-    @GetMapping("/categories/{categoryId}")
+    @GetMapping("/books/unPurchased")
+    public List<Book> findByUnPurchased(@RequestParam int unPurchased) {
+        return bookMapper.findByUnPurchased(unPurchased);
+    }
+
+    @GetMapping("/books/category/{categoryId}")
     public List<BookAllData> findByCategory(@PathVariable int categoryId) {
         return bookMapper.findByCategory(categoryId);
     }
