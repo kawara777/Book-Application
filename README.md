@@ -12,6 +12,7 @@ curl --location 'http://localhost:8080/all/'
 
   <img width="1280" alt="スクリーンショット 2024-02-22 18 14 15" src="https://github.com/kawara777/Book-Application/assets/138858245/37182655-7fc9-4833-ba17-42fb538481eb">
 </div></details>
+https://github.com/kawara777/Book-Application/blob/19bfe627a9318f4e711db6903674c434b2f3871a/src/main/java/com/ookawara/book_/application/Controller/BookController.java#L22
 
 #### ２. booksテーブルのみのデータをIDで取得
 ```
