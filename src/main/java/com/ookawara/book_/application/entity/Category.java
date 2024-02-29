@@ -1,16 +1,16 @@
 package com.ookawara.book_.application.entity;
 
 public class Category {
-    private int categories_id;
+    private int category_id;
     private String category;
 
-    public Category(int categories_id, String category) {
-        this.categories_id = categories_id;
+    public Category(int category_id, String category) {
+        this.category_id = category_id;
         this.category = category;
     }
 
-    public int getCategories_id() {
-        return categories_id;
+    public int getCategoryId() {
+        return category_id;
     }
 
     public String getCategory() {
