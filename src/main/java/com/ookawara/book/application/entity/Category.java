@@ -1,4 +1,4 @@
-package com.ookawara.book_.application.entity;
+package com.ookawara.book.application.entity;
 
 public class Category {
     private int category_id;

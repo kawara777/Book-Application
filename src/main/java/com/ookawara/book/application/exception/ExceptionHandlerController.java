@@ -1,4 +1,4 @@
-package com.ookawara.book_.application.exception;
+package com.ookawara.book.application.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
-package com.ookawara.book_.application.mapper;
+package com.ookawara.book.application.mapper;
 
-import com.ookawara.book_.application.entity.Book;
-import com.ookawara.book_.application.entity.BookAllData;
-import com.ookawara.book_.application.entity.Category;
+import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.BookAllData;
+import com.ookawara.book.application.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

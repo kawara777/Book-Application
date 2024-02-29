@@ -1,12 +1,12 @@
-package com.ookawara.book_.application.service;
+package com.ookawara.book.application.service;
 
-import com.ookawara.book_.application.entity.Book;
-import com.ookawara.book_.application.entity.BookAllData;
-import com.ookawara.book_.application.entity.Category;
-import com.ookawara.book_.application.exception.BookNotFoundException;
-import com.ookawara.book_.application.exception.BooksOkException;
-import com.ookawara.book_.application.exception.CategoryNotFoundException;
-import com.ookawara.book_.application.mapper.BookMapper;
+import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.BookAllData;
+import com.ookawara.book.application.entity.Category;
+import com.ookawara.book.application.exception.BookNotFoundException;
+import com.ookawara.book.application.exception.BooksOkException;
+import com.ookawara.book.application.exception.CategoryNotFoundException;
+import com.ookawara.book.application.mapper.BookMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
