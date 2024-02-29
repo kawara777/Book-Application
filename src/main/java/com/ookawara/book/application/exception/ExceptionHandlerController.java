@@ -12,9 +12,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(BooksOkException.class) //・・・②
-    public ResponseEntity<Map<String, String>> handleBooksOkException(
-            BooksOkException e, HttpServletRequest request) {
+    @ExceptionHandler(BooksRequestOkException.class) //・・・②
+    public ResponseEntity<Map<String, String>> BooksRequestOkException(
+            BooksRequestOkException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),

@@ -4,7 +4,7 @@ import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.BookAllData;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.BookNotFoundException;
-import com.ookawara.book.application.exception.BooksOkException;
+import com.ookawara.book.application.exception.BooksRequestOkException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class BookService {
         if (category.isEmpty() && name.isEmpty()) {
             return bookMapper.findAll();
         } else if (bookMapper.findBy(category, name).isEmpty()) {
-            throw new BooksOkException("category：" + category + ",name：" + name + " に該当するデータはありません。");
+            throw new BooksRequestOkException("category：" + category + ",name：" + name + " に該当するデータはありません。");
         } else {
             return bookMapper.findBy(category, name);
         }
