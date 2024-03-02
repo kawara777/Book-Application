@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS movies;
 
 CREATE TABLE categories (
- id int unsigned AUTO_INCREMENT,
+ category_id int unsigned AUTO_INCREMENT,
  category VARCHAR(20) NOT NULL,
- PRIMARY KEY (id)
+ PRIMARY KEY (category_id)
 );
 
 INSERT INTO categories (category) VALUES ("漫画");
@@ -11,13 +11,13 @@ INSERT INTO categories (category) VALUES ("ライトノベル");
 INSERT INTO categories (category) VALUES ("小説");
 
 CREATE TABLE books (
- id int unsigned AUTO_INCREMENT,
+ book_id int unsigned AUTO_INCREMENT,
  name VARCHAR(1000) NOT NULL,
  release_date DATE NOT NULL,
  is_purchased TINYINT(1) NOT NULL DEFAULT 0,
  category_id int unsigned,
- PRIMARY KEY (id),
- CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL ON UPDATE CASCADE
+ PRIMARY KEY (book_id),
+ CONSTRAINT fk_books_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 INSERT INTO books (name, reLease_date, is_purchased, category_id) VALUES ("ノーゲーム・ノーライフ・1","2012/04/30",1,2);

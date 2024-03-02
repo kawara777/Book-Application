@@ -1,18 +1,17 @@
-package com.ookawara.book_.application.Entity;
+package com.ookawara.book.application.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class BookAllData {
-    private int id;
+    private int book_id;
     private String name;
     private LocalDate release_date;
-    private boolean is_purchased;
+    private Boolean is_purchased;
     private int category_id;
     private String category;
 
-    public BookAllData(int id, String name, LocalDate release_date, boolean is_purchased, int category_id, String category) {
-        this.id = id;
+    public BookAllData(int book_id, String name, LocalDate release_date, Boolean is_purchased, int category_id, String category) {
+        this.book_id = book_id;
         this.name = name;
         this.release_date = release_date;
         this.is_purchased = is_purchased;
@@ -20,23 +19,23 @@ public class BookAllData {
         this.category = category;
     }
 
-    public int getId() {
-        return id;
+    public int getBookId() {
+        return book_id;
     }
 
     public String getName() {
         return name;
     }
 
-    public LocalDate getRelease_date() {
+    public LocalDate getReleaseDate() {
         return release_date;
     }
 
-    public boolean isIs_purchased() {
+    public boolean isIsPurchased() {
         return is_purchased;
     }
 
-    public int getCategory_id() {
+    public int getCategoryId() {
         return category_id;
     }
 

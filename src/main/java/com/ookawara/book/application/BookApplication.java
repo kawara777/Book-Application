@@ -1,4 +1,4 @@
-package com.ookawara.book_.application;
+package com.ookawara.book.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
