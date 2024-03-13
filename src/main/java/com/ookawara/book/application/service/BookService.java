@@ -39,6 +39,7 @@ public class BookService {
     }
 
     public Category findCategory(int categoryId) {
+//        32~37行目を以下のように記述できる
         return bookMapper.findByCategoryId(categoryId).orElseThrow(
                 () -> new CategoryNotFoundException("category：" + categoryId + " のデータはありません。"));
     }
