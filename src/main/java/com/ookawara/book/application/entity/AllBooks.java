@@ -1,6 +1,6 @@
 package com.ookawara.book.application.entity;
 
-public class BookAllData {
+public class AllBooks {
     private int book_id;
     private String name;
     private String release_date;
@@ -8,7 +8,7 @@ public class BookAllData {
     private int category_id;
     private String category;
 
-    public BookAllData(int book_id, String name, String release_date, Boolean is_purchased, int category_id, String category) {
+    public AllBooks(int book_id, String name, String release_date, Boolean is_purchased, int category_id, String category) {
         this.book_id = book_id;
         this.name = name;
         this.release_date = release_date;
