@@ -1,6 +1,6 @@
 package com.ookawara.book.application.service;
 
-import com.ookawara.book.application.entity.AllBooks;
+import com.ookawara.book.application.entity.JoinedBook;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,13 +24,13 @@ class BookServiceTest {
 
     @Test
     public void 全ての項目が未指定のとき全てのデータを取得() {
-        List<AllBooks> allBooks = List.of(
-                new AllBooks(1, "ノーゲーム・ノーライフ・1", "2012/04/30", true, 2, "ライトノベル"),
-                new AllBooks(2, "鬼滅の刃・1", "2016/06/08", false, 1, "漫画"),
-                new AllBooks(3, "ビブリア古書堂の事件手帖・1", "2011/03/25", true, 3, "小説"));
+        List<JoinedBook> allBooks = List.of(
+                new JoinedBook(1, "ノーゲーム・ノーライフ・1", "2012/04/30", true, 2, "ライトノベル"),
+                new JoinedBook(2, "鬼滅の刃・1", "2016/06/08", false, 1, "漫画"),
+                new JoinedBook(3, "ビブリア古書堂の事件手帖・1", "2011/03/25", true, 3, "小説"));
 
         doReturn(allBooks).when(bookMapper).findAll();
-        List<AllBooks> actual = bookService.findBy("", "", null);
+        List<JoinedBook> actual = bookService.findBy("", "", null);
         assertThat(actual).isEqualTo(allBooks);
     }
 }

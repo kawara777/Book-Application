@@ -1,7 +1,7 @@
 package com.ookawara.book.application.controller;
 
 import com.ookawara.book.application.entity.Book;
-import com.ookawara.book.application.entity.AllBooks;
+import com.ookawara.book.application.entity.JoinedBook;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +21,9 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<AllBooks> getBooksAllData(@RequestParam(required = false, defaultValue = "") String category,
-                                          @RequestParam(required = false, defaultValue = "") String name,
-                                          @RequestParam(required = false, defaultValue = "") Boolean isPurchased) {
+    public List<JoinedBook> getBooksAllData(@RequestParam(required = false, defaultValue = "") String category,
+                                            @RequestParam(required = false, defaultValue = "") String name,
+                                            @RequestParam(required = false, defaultValue = "") Boolean isPurchased) {
         return bookService.findBy(category, name, isPurchased);
     }
 
