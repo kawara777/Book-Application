@@ -35,7 +35,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void カテゴリーのみ文字を指定したときその文字がカテゴリーに含まれている全ての本のデータを取得() {
+    public void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
         List<JoinedBook> allBooks = List.of(
                 new JoinedBook(1, "ノーゲーム・ノーライフ・1", "2012/04/30", true, 2, "ライトノベル"));
 
