@@ -45,7 +45,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void 書籍名のみ文字を指定したときその文字が書籍名に含まれている全ての本のデータを取得() {
+    public void 指定した文字列を含む書籍名に該当する全ての本のデータを取得() {
         List<JoinedBook> allBooks = List.of(
                 new JoinedBook(2, "鬼滅の刃・1", "2016/06/08", false, 1, "漫画"),
                 new JoinedBook(3, "ビブリア古書堂の事件手帖・1", "2011/03/25", true, 3, "小説"));
