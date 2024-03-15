@@ -1,5 +1,7 @@
 package com.ookawara.book.application.entity;
 
+import java.util.Objects;
+
 public class Book {
     private int book_id;
     private String name;
@@ -39,5 +41,18 @@ public class Book {
 
     public String getCategory() {
         return category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return book_id == book.book_id && category_id == book.category_id && Objects.equals(name, book.name) && Objects.equals(release_date, book.release_date) && Objects.equals(is_purchased, book.is_purchased) && Objects.equals(category, book.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(book_id, name, release_date, is_purchased, category_id, category);
     }
 }
