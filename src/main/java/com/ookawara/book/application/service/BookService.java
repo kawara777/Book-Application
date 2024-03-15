@@ -1,8 +1,7 @@
 package com.ookawara.book.application.service;
 
-import com.ookawara.book.application.entity.Book;
-import com.ookawara.book.application.entity.JoinedBook;
 import com.ookawara.book.application.entity.Category;
+import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.exception.BookNotFoundException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
@@ -20,7 +19,7 @@ public class BookService {
         this.bookMapper = bookMapper;
     }
 
-    public List<JoinedBook> findBy(String category, String name, Boolean isPurchased) {
+    public List<Book> findBy(String category, String name, Boolean isPurchased) {
         if (category.isEmpty() && name.isEmpty() && isPurchased == null) {
             return bookMapper.findAll();
         } else {
