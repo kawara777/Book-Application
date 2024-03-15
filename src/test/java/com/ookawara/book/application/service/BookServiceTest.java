@@ -1,6 +1,7 @@
 package com.ookawara.book.application.service;
 
 import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.exception.BookNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,10 +83,16 @@ class BookServiceTest {
     public void 指定した文字を含むデータが存在しないとき空のデータを返す() {
         List<Book> allBooks = List.of(new Book[0]);
 
-        doReturn(allBooks).when(bookMapper).findBy("no"," ",null);
-        List<Book> actual = bookService.findBy("no"," ",null);
+        doReturn(allBooks).when(bookMapper).findBy("no", " ", null);
+        List<Book> actual = bookService.findBy("no", " ", null);
         assertThat(actual).isEqualTo(allBooks);
     }
 
+    @Test
+    public void 存在する本のIDを指定したときに正常に本のデータを返す() throws BookNotFoundException {
+        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", "2012/04/30", true, 2, "ライトノベル"))).when(bookMapper).findByBookId(1);
 
+        Book actual = bookService.findBook(1);
+        assertThat(actual).isEqualTo(new Book(1, "ノーゲーム・ノーライフ・1", "2012/04/30", true, 2, "ライトノベル"));
+    }
 }
