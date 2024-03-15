@@ -14,7 +14,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -100,7 +99,7 @@ class BookServiceTest {
     @Test
     public void 存在しない本のIDを指定したときに例外のエラーメッセージを返す() {
         doReturn(Optional.empty()).when(bookMapper).findByBookId(0);
-        assertThatThrownBy(()->bookService.findBook(0))
+        assertThatThrownBy(() -> bookService.findBook(0))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessage("book：" + 0 + " のデータはありません。");
     }
