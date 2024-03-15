@@ -1,7 +1,6 @@
 package com.ookawara.book.application.mapper;
 
 import com.ookawara.book.application.entity.Book;
-import com.ookawara.book.application.entity.JoinedBook;
 import com.ookawara.book.application.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,12 +15,12 @@ import java.util.Optional;
 @Mapper
 public interface BookMapper {
     @Select("select * from books join categories on books.category_id = categories.category_id")
-    List<JoinedBook> findAll();
+    List<Book> findAll();
 
     @SelectProvider(SqlProvider.class)
-    List<JoinedBook> findBy(@Param("category") String category,
-                            @Param("name") String name,
-                            @Param("isPurchased") Boolean isPurchased);
+    List<Book> findBy(@Param("category") String category,
+                      @Param("name") String name,
+                      @Param("isPurchased") Boolean isPurchased);
 
     class SqlProvider implements ProviderMethodResolver {
         public String findBy(@Param("category") String category,
@@ -46,7 +45,7 @@ public interface BookMapper {
         }
     }
 
-    @Select("select * from books where book_id = #{bookId}")
+    @Select("select * from books join categories on books.category_id = categories.category_id where book_id = #{bookId}")
     Optional<Book> findByBookId(int bookId);
 
     @Select("select * from categories where category_id = #{categoryId}")
