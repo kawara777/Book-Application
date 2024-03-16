@@ -37,7 +37,7 @@ public interface BookMapper {
                     if (name != null) {
                         WHERE("name like concat('%',#{name},'%')");
                     }
-                    if (isPurchased != null ) {
+                    if (isPurchased != null) {
                         WHERE("is_purchased = #{isPurchased}");
                     }
                 }
