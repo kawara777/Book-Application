@@ -1,16 +1,17 @@
 package com.ookawara.book.application.entity;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Book {
     private int book_id;
     private String name;
-    private String release_date;
+    private LocalDate release_date;
     private Boolean is_purchased;
     private int category_id;
     private String category;
 
-    public Book(int book_id, String name, String release_date, Boolean is_purchased, int category_id, String category) {
+    public Book(int book_id, String name, LocalDate release_date, Boolean is_purchased, int category_id, String category) {
         this.book_id = book_id;
         this.name = name;
         this.release_date = release_date;
@@ -27,7 +28,7 @@ public class Book {
         return name;
     }
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return release_date;
     }
 
