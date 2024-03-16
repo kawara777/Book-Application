@@ -1,7 +1,9 @@
 package com.ookawara.book.application.service;
 
 import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.BookNotFoundException;
+import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -102,5 +104,20 @@ class BookServiceTest {
         assertThatThrownBy(() -> bookService.findBook(0))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessage("book：" + 0 + " のデータはありません。");
+    }
+
+    @Test
+    public void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す() throws BookNotFoundException {
+        doReturn(Optional.of(new Category(1, "ライトノベル"))).when(bookMapper).findByCategoryId(1);
+        Category actual = bookService.findCategory(1);
+        assertThat(actual).isEqualTo(new Category(1, "ライトノベル"));
+    }
+
+    @Test
+    public void 存在しないカテゴリーのIDを指定したときに例外のエラーメッセージを返す() {
+        doReturn(Optional.empty()).when(bookMapper).findByCategoryId(0);
+        assertThatThrownBy(() -> bookService.findCategory(0))
+                .isInstanceOf(CategoryNotFoundException.class)
+                .hasMessage("category：" + 0 + " のデータはありません。");
     }
 }
