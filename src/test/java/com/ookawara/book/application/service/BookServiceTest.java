@@ -18,6 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -38,6 +39,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findAll();
         List<Book> actual = bookService.findBy("", "", null);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findAll();
     }
 
     @Test
@@ -48,6 +50,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findBy("ラ", "", null);
         List<Book> actual = bookService.findBy("ラ", "", null);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("ラ", "", null);
     }
 
     @Test
@@ -59,6 +62,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findBy("", "の", null);
         List<Book> actual = bookService.findBy("", "の", null);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("", "の", null);
     }
 
     @Test
@@ -70,6 +74,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findBy("", "", true);
         List<Book> actual = bookService.findBy("", "", true);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("", "", true);
     }
 
     @Test
@@ -80,6 +85,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findBy("", "", false);
         List<Book> actual = bookService.findBy("", "", false);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("", "", false);
     }
 
     @Test
@@ -89,6 +95,7 @@ class BookServiceTest {
         doReturn(allBooks).when(bookMapper).findBy("no", " ", null);
         List<Book> actual = bookService.findBy("no", " ", null);
         assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("no", " ", null);
     }
 
     @Test
@@ -97,6 +104,7 @@ class BookServiceTest {
                 .when(bookMapper).findByBookId(1);
         Book actual = bookService.findBook(1);
         assertThat(actual).isEqualTo(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
+        verify(bookMapper).findByBookId(1);
     }
 
     @Test
@@ -105,6 +113,7 @@ class BookServiceTest {
         assertThatThrownBy(() -> bookService.findBook(0))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessage("book：" + 0 + " のデータはありません。");
+        verify(bookMapper).findByBookId(0);
     }
 
     @Test
@@ -112,6 +121,7 @@ class BookServiceTest {
         doReturn(Optional.of(new Category(1, "ライトノベル"))).when(bookMapper).findByCategoryId(1);
         Category actual = bookService.findCategory(1);
         assertThat(actual).isEqualTo(new Category(1, "ライトノベル"));
+        verify(bookMapper).findByCategoryId(1);
     }
 
     @Test
@@ -120,5 +130,6 @@ class BookServiceTest {
         assertThatThrownBy(() -> bookService.findCategory(0))
                 .isInstanceOf(CategoryNotFoundException.class)
                 .hasMessage("category：" + 0 + " のデータはありません。");
+        verify(bookMapper).findByCategoryId(0);
     }
 }
