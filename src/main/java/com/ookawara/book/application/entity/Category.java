@@ -3,16 +3,16 @@ package com.ookawara.book.application.entity;
 import java.util.Objects;
 
 public class Category {
-    private int category_id;
+    private int categoryId;
     private String category;
 
-    public Category(int category_id, String category) {
-        this.category_id = category_id;
+    public Category(int categoryId, String category) {
+        this.categoryId = categoryId;
         this.category = category;
     }
 
     public int getCategoryId() {
-        return category_id;
+        return categoryId;
     }
 
     public String getCategory() {
@@ -24,11 +24,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category1 = (Category) o;
-        return category_id == category1.category_id && Objects.equals(category, category1.category);
+        return categoryId == category1.categoryId && Objects.equals(category, category1.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(category_id, category);
+        return Objects.hash(categoryId, category);
     }
 }
