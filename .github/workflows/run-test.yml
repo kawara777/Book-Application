@@ -11,8 +11,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      MYSQL_USER: ${{secrets.SECRET_SPRING_DATASOURCE_USERNAME}}
-      MYSQL_PASSWORD: ${{secrets.SECRET_SPRING_DATASOURCE_PASSWORD}}
+      MYSQL_USER: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+      MYSQL_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
     permissions:
       contents: read
       checks: write
