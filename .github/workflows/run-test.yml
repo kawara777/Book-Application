@@ -33,7 +33,6 @@ jobs:
       - name: Test with Gradle Wrapper
         run: ./gradlew test
           echo "ths is env=$SPRING_DATASOURCE_USERNAME"
-          echo "ths is env=$SPRING_DATASOURCE_PASSWORD"
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
