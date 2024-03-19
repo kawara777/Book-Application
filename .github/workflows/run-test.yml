@@ -11,6 +11,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+
     permissions:
       contents: read
       checks: write
@@ -27,9 +31,6 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
       - name: Test with Gradle Wrapper
-        env:
-          SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-          SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
         run: ./gradlew test
 
       - name: Publish Test Report
