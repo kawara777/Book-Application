@@ -11,10 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-
     permissions:
       contents: read
       checks: write
