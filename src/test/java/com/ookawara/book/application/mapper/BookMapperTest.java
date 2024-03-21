@@ -1,18 +1,24 @@
 package com.ookawara.book.application.mapper;
 
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.spring.api.DBRider;
 import com.ookawara.book.application.entity.Book;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("mapper")
+@DBRider
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookMapperTest {
@@ -125,5 +131,24 @@ class BookMapperTest {
     void 指定した文字列を含むデータが存在しないとき空のデータを返す() {
         List<Book> books = bookMapper.findBy(null, " ", null);
         assertThat(books).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在する本のIDを指定したときに正常に本のデータを返す () {
+        Optional<Book> book = bookMapper.findByBookId(1);
+        assertThat(book)
+                .contains(
+                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル")
+                );
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在しない本のIDを指定した時に空のデータを返す() {
+        Optional<Book> book = bookMapper.findByBookId(0);
+        assertThat(book).isEmpty();
     }
 }
