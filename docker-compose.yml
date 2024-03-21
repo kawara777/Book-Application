@@ -9,8 +9,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: book_list
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
       - 3307:3306
     volumes:
