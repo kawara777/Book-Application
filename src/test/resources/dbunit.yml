@@ -5,5 +5,6 @@ properties:
 caseInsensitiveStrategy: LOWERCASE
 connectionConfig:
   url: "jdbc:mysql://localhost:3307/book_list"
-  user: "user"
-  password: "password"
+  env:
+   user: ${SPRING_DATASOURCE_USERNAME}
+   password: ${SPRING_DATASOURCE_PASSWORD}
