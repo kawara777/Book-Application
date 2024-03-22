@@ -89,7 +89,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void 指定した文字を含むデータが存在しないとき空のデータを返す() {
+    public void 指定した文字列を含むデータが存在しないとき空のデータを返す() {
         List<Book> allBooks = List.of(new Book[0]);
 
         doReturn(allBooks).when(bookMapper).findBy("no", " ", null);
