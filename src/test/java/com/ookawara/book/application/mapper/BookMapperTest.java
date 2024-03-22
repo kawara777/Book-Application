@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("mapper")
 @DBRider
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
