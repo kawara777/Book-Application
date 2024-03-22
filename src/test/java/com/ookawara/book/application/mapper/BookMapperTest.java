@@ -3,6 +3,7 @@ package com.ookawara.book.application.mapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +150,22 @@ class BookMapperTest {
     void 存在しない本のIDを指定した時に空のデータを返す() {
         Optional<Book> book = bookMapper.findByBookId(0);
         assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す () {
+        Optional<Category> category = bookMapper.findByCategoryId(1);
+        assertThat(category)
+                .contains(new Category(1, "漫画"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在しないカテゴリーのIDを指定した時に空のデータを返す() {
+        Optional<Category> category = bookMapper.findByCategoryId(0);
+        assertThat(category).isEmpty();
     }
 }

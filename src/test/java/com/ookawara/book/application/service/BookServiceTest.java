@@ -118,9 +118,9 @@ class BookServiceTest {
 
     @Test
     public void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す() throws BookNotFoundException {
-        doReturn(Optional.of(new Category(1, "ライトノベル"))).when(bookMapper).findByCategoryId(1);
+        doReturn(Optional.of(new Category(1, "漫画"))).when(bookMapper).findByCategoryId(1);
         Category actual = bookService.findCategory(1);
-        assertThat(actual).isEqualTo(new Category(1, "ライトノベル"));
+        assertThat(actual).isEqualTo(new Category(1, "漫画"));
         verify(bookMapper).findByCategoryId(1);
     }
 
