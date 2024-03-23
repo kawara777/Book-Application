@@ -215,4 +215,37 @@ class BookRestApiIntegrationTest {
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
     }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返すこと() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "categoryId": 1,
+                            "category": "漫画"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在しないカテゴリーのIDを指定したときにステータスコードが404となり例外メッセージが返されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/category/0"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "404",
+                    "error": "Not Found",
+                    "message": "category：0 のデータはありません。",
+                    "path": "/category/0"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
 }
