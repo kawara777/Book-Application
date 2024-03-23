@@ -201,7 +201,6 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 存在しない本のIDを指定したときにステータスコードが404となり例外メッセージが返されること() throws Exception {
-        ZonedDateTime currentDateTime = ZonedDateTime.now();
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/book/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
