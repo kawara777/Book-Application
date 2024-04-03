@@ -136,11 +136,12 @@ class BookServiceTest {
     }
 
     @Test
-    public void 本のデータを正常に登録できること() throws BookConflictException{
-        Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
-        doNothing().when(bookMapper).insertBook(book);
-        Book actual = bookService.createBook("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
-        assertThat(actual).isEqualTo(book);
-        verify(bookMapper).insertBook(book);
+    public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
+        doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
+        assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
+                .isInstanceOf(BookConflictException.class)
+                .hasMessage("すでに登録されています。");
+        verify(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
     }
 }
