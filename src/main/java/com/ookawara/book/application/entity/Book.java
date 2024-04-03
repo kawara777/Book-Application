@@ -32,6 +32,14 @@ public class Book {
         this.categoryId = categoryId;
     }
 
+    public Book(Integer bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
+        this.bookId = bookId;
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.isPurchased = isPurchased;
+        this.categoryId = categoryId;
+    }
+
     public Integer getBookId() {
         return bookId;
     }
