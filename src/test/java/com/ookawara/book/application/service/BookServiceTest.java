@@ -132,4 +132,5 @@ class BookServiceTest {
                 .hasMessage("category：" + 0 + " のデータはありません。");
         verify(bookMapper).findByCategoryId(0);
     }
+
 }
