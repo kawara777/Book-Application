@@ -1,12 +1,14 @@
 package com.ookawara.book.application.service;
 
-import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.Category;
+import com.ookawara.book.application.exception.BookConflictException;
 import com.ookawara.book.application.exception.BookNotFoundException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,4 +45,13 @@ public class BookService {
                 () -> new CategoryNotFoundException("category：" + categoryId + " のデータはありません。"));
     }
 
+    public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
+        Book book = new Book(name, releaseDate, isPurchased, categoryId);
+        if (bookMapper.findByNameAndCategory(book.getName(), book.getCategoryId()).isPresent()) {
+            throw new BookConflictException("すでに登録されています。");
+        } else {
+            bookMapper.insertBook(book);
+            return book;
+        }
+    }
 }

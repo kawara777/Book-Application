@@ -2,6 +2,7 @@ package com.ookawara.book.application.service;
 
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
+import com.ookawara.book.application.exception.BookConflictException;
 import com.ookawara.book.application.exception.BookNotFoundException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
@@ -17,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -131,5 +131,24 @@ class BookServiceTest {
                 .isInstanceOf(CategoryNotFoundException.class)
                 .hasMessage("category：" + 0 + " のデータはありません。");
         verify(bookMapper).findByCategoryId(0);
+    }
+
+    @Test
+    public void 本のデータを正常に登録できること() {
+        Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
+        doNothing().when(bookMapper).insertBook(book);
+        Book actual = bookService.createBook("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
+        assertThat(actual).isEqualTo(book);
+        verify(bookMapper).insertBook(book);
+    }
+
+    @Test
+    public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
+        doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
+        assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
+                .isInstanceOf(BookConflictException.class)
+                .hasMessage("すでに登録されています。");
+        verify(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
     }
 }
