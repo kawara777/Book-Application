@@ -136,7 +136,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void 本のデータを正常に登録できること() {
+    public void 本のデータを正常に登録できること() throws BookConflictException{
         Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
         doNothing().when(bookMapper).insertBook(book);
         Book actual = bookService.createBook("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
