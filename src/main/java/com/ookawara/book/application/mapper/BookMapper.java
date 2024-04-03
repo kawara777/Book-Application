@@ -2,7 +2,9 @@ package com.ookawara.book.application.mapper;
 
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -51,4 +53,7 @@ public interface BookMapper {
     @Select("select * from categories where category_id = #{categoryId}")
     Optional<Category> findByCategoryId(int categoryId);
 
+    @Insert("insert into books (name, release_date, is_purchased, category_id) values (#{name}, #{releaseDate}, #{isPurchased}, #{categoryId})")
+    @Options(useGeneratedKeys = true, keyProperty = "bookId")
+    void insertBook(Book book);
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -167,5 +166,22 @@ class BookMapperTest {
     void 存在しないカテゴリーのIDを指定した時に空のデータを返す() {
         Optional<Category> category = bookMapper.findByCategoryId(0);
         assertThat(category).isEmpty();
+    }
+
+    @Test
+    @Sql(
+            scripts = {"classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/reset-book-id.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
+    void 本の情報と新しく採番されたIDが正常に登録されること() {
+        Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
+        bookMapper.insertBook(book);
+
+        List<Book> books = bookMapper.findAll();
+        assertThat(books)
+                .hasSize(1)
+                .containsOnly(
+                        new Book(1, "鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1, "漫画"));
     }
 }

@@ -4,14 +4,17 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Book {
-    private int bookId;
+    private Integer bookId;
     private String name;
     private LocalDate releaseDate;
     private Boolean isPurchased;
-    private int categoryId;
+    private Integer categoryId;
     private String category;
 
-    public Book(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, int categoryId, String category) {
+//    MyBatis がインスタンス生成するのに必要
+    public Book() {}
+
+    public Book(Integer bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId, String category) {
         this.bookId = bookId;
         this.name = name;
         this.releaseDate = releaseDate;
@@ -20,7 +23,16 @@ public class Book {
         this.category = category;
     }
 
-    public int getBookId() {
+    public Book(String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
+        // bookId は INSERT ⽂発⾏時に MySQL によって⾃動採番した値が補完されるので null を設定
+        this.bookId = null;
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.isPurchased = isPurchased;
+        this.categoryId = categoryId;
+    }
+
+    public Integer getBookId() {
         return bookId;
     }
 
@@ -32,11 +44,11 @@ public class Book {
         return releaseDate;
     }
 
-    public boolean isIsPurchased() {
+    public Boolean getIsPurchased() {
         return isPurchased;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
