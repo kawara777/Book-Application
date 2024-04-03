@@ -1,15 +1,25 @@
 package com.ookawara.book.application.controller;
 
-import com.ookawara.book.application.entity.Category;
+import com.ookawara.book.application.controller.request.BookRequest;
+import com.ookawara.book.application.controller.response.BookResponse;
 import com.ookawara.book.application.entity.Book;
+import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.service.BookService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
+@Validated
 @RestController
 public class BookController {
 
@@ -34,6 +44,14 @@ public class BookController {
     @GetMapping("/category/{categoryId}")
     public Category getCategory(@PathVariable int categoryId) {
         return bookService.findCategory(categoryId);
+    }
+
+    @PostMapping("/books")
+    public ResponseEntity<BookResponse> postBook(@RequestBody @Valid BookRequest bookRequest, UriComponentsBuilder uriBuilder) {
+        Book book = bookService.createBook(bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
+        URI location = uriBuilder.path("/book/{id}").buildAndExpand(book.getBookId()).toUri();
+        BookResponse body = new BookResponse("正常に登録されました。");
+        return ResponseEntity.created(location).body(body);
     }
 
 }
