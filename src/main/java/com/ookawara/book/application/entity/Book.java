@@ -8,12 +8,12 @@ public class Book {
     private String name;
     private LocalDate releaseDate;
     private Boolean isPurchased;
-    private int categoryId;
+    private Integer categoryId;
     private String category;
 
     public Book() {}
 
-    public Book(Integer bookId, String name, LocalDate releaseDate, Boolean isPurchased, int categoryId, String category) {
+    public Book(Integer bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId, String category) {
         this.bookId = bookId;
         this.name = name;
         this.releaseDate = releaseDate;
@@ -22,7 +22,7 @@ public class Book {
         this.category = category;
     }
 
-    public Book(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
+    public Book(String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
         // bookId は INSERT ⽂発⾏時に MySQL によって⾃動採番した値が補完されるので null を設定
         this.bookId = null;
         this.name = name;
@@ -47,7 +47,7 @@ public class Book {
         return isPurchased;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
