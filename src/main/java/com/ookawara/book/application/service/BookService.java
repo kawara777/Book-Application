@@ -4,6 +4,7 @@ import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.BookConflictException;
 import com.ookawara.book.application.exception.BookNotFoundException;
+import com.ookawara.book.application.exception.CategoryConflictException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,16 @@ public class BookService {
         } else {
             bookMapper.insertBook(book);
             return book;
+        }
+    }
+
+    public Category createCategory(String category) {
+        Category categoryName = new Category(category);
+        if (bookMapper.findByCategory(categoryName.getCategory()).isPresent()) {
+            throw new CategoryConflictException("すでに登録されています。");
+        } else {
+            bookMapper.insertCategory(categoryName);
+            return categoryName;
         }
     }
 }
