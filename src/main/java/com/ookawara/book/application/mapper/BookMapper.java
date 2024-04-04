@@ -54,7 +54,7 @@ public interface BookMapper {
     Optional<Category> findByCategoryId(int categoryId);
 
     @Select("select * from books where name like #{name} and category_id like #{categoryId}")
-    Optional<Book> findByNameAndCategoryId(String name, int categoryId);
+    Optional<Book> findByNameAndCategory(String name, int categoryId);
 
     @Select("select * from categories where category like #{category}")
     Optional<Category> findByCategory(String category);
