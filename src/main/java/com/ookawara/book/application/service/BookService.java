@@ -47,7 +47,7 @@ public class BookService {
 
     public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
         Book book = new Book(name, releaseDate, isPurchased, categoryId);
-        if (bookMapper.findByNameAndCategory(book.getName(), book.getCategoryId()).isPresent()) {
+        if (bookMapper.findByNameAndCategoryId(book.getName(), book.getCategoryId()).isPresent()) {
             throw new BookConflictException("すでに登録されています。");
         } else {
             bookMapper.insertBook(book);
