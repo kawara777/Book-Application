@@ -1,17 +1,23 @@
 package com.ookawara.book.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 
 public class Category {
-    private int categoryId;
+    private Integer categoryId;
     private String category;
 
-    public Category(int categoryId, String category) {
+    public Category(Integer categoryId, String category) {
         this.categoryId = categoryId;
         this.category = category;
     }
 
-    public int getCategoryId() {
+    public Category(String category) {
+        this.category = category;
+    }
+
+    public Integer getCategoryId() {
         return categoryId;
     }
 

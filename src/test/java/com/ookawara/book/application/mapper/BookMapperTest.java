@@ -1,6 +1,7 @@
 package com.ookawara.book.application.mapper;
 
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
@@ -185,6 +186,22 @@ class BookMapperTest {
     }
 
     @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void カテゴリーに指定した文字列が完全一致したデータを返す() {
+        Optional<Category> category = bookMapper.findByCategory("小説");
+        assertThat(category).contains(new Category(3,"小説"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void カテゴリーに指定した文字列が一致しないとき空のデータを返す() {
+        Optional<Category> category = bookMapper.findByCategory("しょうせつ");
+        assertThat(category).isEmpty();
+    }
+
+    @Test
     @Sql(
             scripts = {"classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/reset-book-id.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
@@ -199,5 +216,14 @@ class BookMapperTest {
                 .hasSize(1)
                 .containsOnly(
                         new Book(1, "鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1, "漫画"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
+    @Transactional
+    void カテゴリーと新しく採番されたIDが正常に登録されること() {
+        Category category = new Category("エッセイ");
+        bookMapper.insertCategory(category);
     }
 }
