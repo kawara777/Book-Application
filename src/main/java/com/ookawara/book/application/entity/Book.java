@@ -24,8 +24,6 @@ public class Book {
     }
 
     public Book(String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
-        // bookId は INSERT ⽂発⾏時に MySQL によって⾃動採番した値が補完されるので null を設定
-        this.bookId = null;
         this.name = name;
         this.releaseDate = releaseDate;
         this.isPurchased = isPurchased;

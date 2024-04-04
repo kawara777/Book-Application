@@ -14,8 +14,6 @@ public class Category {
     }
 
     public Category(String category) {
-//        categoryId は INSERT ⽂発⾏時に MySQL によって⾃動採番した値が補完されるので null を設定
-        this.categoryId = null;
         this.category = category;
     }
 
