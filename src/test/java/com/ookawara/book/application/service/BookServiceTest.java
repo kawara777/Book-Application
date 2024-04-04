@@ -147,10 +147,10 @@ class BookServiceTest {
     @Test
     public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
         doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
+                .when(bookMapper).findByNameAndCategoryId("ノーゲーム・ノーライフ・1", 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(BookConflictException.class)
                 .hasMessage("すでに登録されています。");
-        verify(bookMapper).findByNameAndCategory("ノーゲーム・ノーライフ・1", 2);
+        verify(bookMapper).findByNameAndCategoryId("ノーゲーム・ノーライフ・1", 2);
     }
 }
