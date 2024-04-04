@@ -56,7 +56,14 @@ public interface BookMapper {
     @Select("select * from books where name like #{name} and category_id like #{categoryId}")
     Optional<Book> findByNameAndCategory(String name, int categoryId);
 
+    @Select("select * from categories where category like #{category}")
+    Optional<Category> findByCategory(String category);
+
     @Insert("insert into books (name, release_date, is_purchased, category_id) values (#{name}, #{releaseDate}, #{isPurchased}, #{categoryId})")
     @Options(useGeneratedKeys = true, keyProperty = "bookId")
     void insertBook(Book book);
+
+    @Insert("insert into categories (category) values (#{category})")
+    @Options(useGeneratedKeys = true, keyProperty = "categoryId")
+    void insertCategory(Category category);
 }
