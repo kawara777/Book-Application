@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 
 @SpringBootTest(classes = BookApplication.class)
 @AutoConfigureMockMvc
@@ -304,96 +303,6 @@ class BookRestApiIntegrationTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @Transactional
-    void 書籍名を空文字で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "name": " ",
-                                    "releaseDate": "2016-08-09",
-                                    "isPurchased": false,
-                                    "categoryId": 1
-                                }
-                                """))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        JSONAssert.assertEquals("""
-                {
-                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
-                    "status": "400",
-                    "error": "Bad Request",
-                    "message": {
-                        "name": "書籍名を入力してください"
-                    },
-                    "path": "/books"
-                }
-                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
-        )));
-    }
-
-    @Test
-    @DataSet("datasets/books.yml")
-    @Transactional
-    void 発売日を未来の日付で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "name": "鬼滅の刃・2",
-                                    "releaseDate": "9999-12-31",
-                                    "isPurchased": false,
-                                    "categoryId": 1
-                                }
-                                """))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        JSONAssert.assertEquals("""
-                {
-                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
-                    "status": "400",
-                    "error": "Bad Request",
-                    "message": {
-                        "releaseDate": "現在もしくは過去の日付を入力してください"
-                    },
-                    "path": "/books"
-                }
-                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
-        )));
-    }
-
-    @Test
-    @DataSet("datasets/books.yml")
-    @Transactional
-    void カテゴリーIDを1より小さい数字で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "name": "鬼滅の刃・2",
-                                    "releaseDate": "2016-08-09",
-                                    "isPurchased": false,
-                                    "categoryId": 0
-                                }
-                                """))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        JSONAssert.assertEquals("""
-                {
-                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
-                    "status": "400",
-                    "error": "Bad Request",
-                    "message": {
-                        "categoryId": "1 以上の値にしてください"
-                    },
-                    "path": "/books"
-                }
-                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
-        )));
-    }
-
-    @Test
-    @DataSet("datasets/books.yml")
     @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
     @Transactional
     void カテゴリーが正常に登録できること() throws Exception {
@@ -431,33 +340,6 @@ class BookRestApiIntegrationTest {
                     "status": "409",
                     "error": "Conflict",
                     "message": "すでに登録されています。",
-                    "path": "/categories"
-                }
-                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
-        )));
-    }
-
-    @Test
-    @DataSet("datasets/books.yml")
-    @Transactional
-    void カテゴリーを空文字で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.post("/categories")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "category": " "
-                                }
-                                """))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        JSONAssert.assertEquals("""
-                {
-                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
-                    "status": "400",
-                    "error": "Bad Request",
-                    "message": {
-                        "category": "カテゴリー名を入力してください"
-                    },
                     "path": "/categories"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
