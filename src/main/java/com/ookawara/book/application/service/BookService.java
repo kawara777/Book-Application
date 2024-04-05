@@ -2,9 +2,9 @@ package com.ookawara.book.application.service;
 
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
-import com.ookawara.book.application.exception.BookConflictException;
+import com.ookawara.book.application.exception.BookDuplicateException;
 import com.ookawara.book.application.exception.BookNotFoundException;
-import com.ookawara.book.application.exception.CategoryConflictException;
+import com.ookawara.book.application.exception.CategoryDuplicateException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,7 @@ public class BookService {
     public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
         Book book = new Book(name, releaseDate, isPurchased, categoryId);
         if (bookMapper.findByNameAndCategoryId(book.getName(), book.getCategoryId()).isPresent()) {
-            throw new BookConflictException("すでに登録されています。");
+            throw new BookDuplicateException("すでに登録されています。");
         } else {
             bookMapper.insertBook(book);
             return book;
@@ -59,7 +59,7 @@ public class BookService {
     public Category createCategory(String category) {
         Category categoryName = new Category(category);
         if (bookMapper.findByCategory(categoryName.getCategory()).isPresent()) {
-            throw new CategoryConflictException("すでに登録されています。");
+            throw new CategoryDuplicateException("すでに登録されています。");
         } else {
             bookMapper.insertCategory(categoryName);
             return categoryName;

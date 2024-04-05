@@ -43,9 +43,9 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BookConflictException.class)
-    public ResponseEntity<Map<String, String>> handleBookConflictException(
-            BookConflictException e, HttpServletRequest request) {
+    @ExceptionHandler(BookDuplicateException.class)
+    public ResponseEntity<Map<String, String>> handleBookDuplicateException(
+            BookDuplicateException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
@@ -57,9 +57,9 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(CategoryConflictException.class)
-    public ResponseEntity<Map<String, String>> handleCategoryConflictException(
-            CategoryConflictException e, HttpServletRequest request) {
+    @ExceptionHandler(CategoryDuplicateException.class)
+    public ResponseEntity<Map<String, String>> handleCategoryDuplicateException(
+            CategoryDuplicateException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),

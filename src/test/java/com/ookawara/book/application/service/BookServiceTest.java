@@ -2,9 +2,9 @@ package com.ookawara.book.application.service;
 
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
-import com.ookawara.book.application.exception.BookConflictException;
+import com.ookawara.book.application.exception.BookDuplicateException;
 import com.ookawara.book.application.exception.BookNotFoundException;
-import com.ookawara.book.application.exception.CategoryConflictException;
+import com.ookawara.book.application.exception.CategoryDuplicateException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
@@ -150,7 +150,7 @@ class BookServiceTest {
         doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
                 .when(bookMapper).findByNameAndCategoryId("ノーゲーム・ノーライフ・1", 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
-                .isInstanceOf(BookConflictException.class)
+                .isInstanceOf(BookDuplicateException.class)
                 .hasMessage("すでに登録されています。");
         verify(bookMapper).findByNameAndCategoryId("ノーゲーム・ノーライフ・1", 2);
     }
@@ -169,7 +169,7 @@ class BookServiceTest {
         doReturn(Optional.of(new Category("漫画")))
                 .when(bookMapper).findByCategory("漫画");
         assertThatThrownBy(() -> bookService.createCategory("漫画"))
-                .isInstanceOf(CategoryConflictException.class)
+                .isInstanceOf(CategoryDuplicateException.class)
                 .hasMessage("すでに登録されています。");
         verify(bookMapper).findByCategory("漫画");
     }
