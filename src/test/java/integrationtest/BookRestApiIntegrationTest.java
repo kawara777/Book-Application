@@ -277,6 +277,34 @@ class BookRestApiIntegrationTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
+    void すでに存在する書籍データを登録したときにステータスコードが409となり設定したエラーメッセージを返すこと() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "ノーゲーム・ノーライフ・1",
+                                    "releaseDate": "2012-04-30",
+                                    "isPurchased": true,
+                                    "categoryId": 2
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "409",
+                    "error": "Conflict",
+                    "message": "すでに登録されています。",
+                    "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
     void 書籍名を空文字で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -359,6 +387,78 @@ class BookRestApiIntegrationTest {
                         "categoryId": "1 以上の値にしてください"
                     },
                     "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
+    @Transactional
+    void カテゴリーが正常に登録できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "category": "エッセイ"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に登録されました。"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void すでに存在するカテゴリーを登録したときにステータスコードが409となり設定したエラーメッセージを返すこと() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "category": "漫画"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "409",
+                    "error": "Conflict",
+                    "message": "すでに登録されています。",
+                    "path": "/categories"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void カテゴリーを空文字で登録したときにステータスコードが400となり設定したエラーメッセージが返されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "category": " "
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "400",
+                    "error": "Bad Request",
+                    "message": {
+                        "category": "カテゴリー名を入力してください"
+                    },
+                    "path": "/categories"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
