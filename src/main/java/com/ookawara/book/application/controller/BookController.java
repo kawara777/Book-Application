@@ -7,7 +7,6 @@ import com.ookawara.book.application.controller.response.CategoryResponse;
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.service.BookService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
