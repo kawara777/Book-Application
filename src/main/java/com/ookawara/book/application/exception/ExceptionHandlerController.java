@@ -43,9 +43,23 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BookConflictException.class)
-    public ResponseEntity<Map<String, String>> handleBookConflictException(
-            BookConflictException e, HttpServletRequest request) {
+    @ExceptionHandler(BookDuplicateException.class)
+    public ResponseEntity<Map<String, String>> handleBookDuplicateException(
+            BookDuplicateException e, HttpServletRequest request) {
+
+        Map<String, String> body = Map.of(
+                "timestamp", ZonedDateTime.now().toString(),
+                "status", String.valueOf(HttpStatus.CONFLICT.value()),
+                "error", HttpStatus.CONFLICT.getReasonPhrase(),
+                "message", e.getMessage(),
+                "path", request.getRequestURI());
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CategoryDuplicateException.class)
+    public ResponseEntity<Map<String, String>> handleCategoryDuplicateException(
+            CategoryDuplicateException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
@@ -59,10 +73,10 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(
-            MethodArgumentNotValidException ex, HttpServletRequest request) {
+            MethodArgumentNotValidException e, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();
-        for (FieldError e : ex.getFieldErrors()) {
-            errors.put(e.getField(), e.getDefaultMessage());
+        for (FieldError ex : e.getFieldErrors()) {
+            errors.put(ex.getField(), ex.getDefaultMessage());
         }
         Map<String, Object> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
