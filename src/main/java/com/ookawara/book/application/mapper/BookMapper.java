@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -19,12 +20,12 @@ public interface BookMapper {
     @Select("select * from books join categories on books.category_id = categories.category_id")
     List<Book> findAll();
 
-    @SelectProvider(SqlProvider.class)
+    @SelectProvider(BookSqlProvider.class)
     List<Book> findBy(@Param("category") String category,
                       @Param("name") String name,
                       @Param("isPurchased") Boolean isPurchased);
 
-    class SqlProvider implements ProviderMethodResolver {
+    class BookSqlProvider implements ProviderMethodResolver {
         public String findBy(@Param("category") String category,
                              @Param("name") String name,
                              @Param("isPurchased") Boolean isPurchased) {
@@ -66,4 +67,7 @@ public interface BookMapper {
     @Insert("insert into categories (category) values (#{category})")
     @Options(useGeneratedKeys = true, keyProperty = "categoryId")
     void insertCategory(Category category);
+
+    @Update("update books set name = #{name}, release_date = #{releaseDate}, is_purchased = #{isPurchased}, category_id = #{categoryId} where book_id = #{bookId}")
+    void updateBook(Book book);
 }

@@ -136,7 +136,7 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 存在する本のIDを指定したときに正常に本のデータを返す () {
+    void 存在する本のIDを指定したときに正常に本のデータを返す() {
         Optional<Book> book = bookMapper.findByBookId(1);
         assertThat(book)
                 .contains(
@@ -155,7 +155,7 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す () {
+    void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す() {
         Optional<Category> category = bookMapper.findByCategoryId(1);
         assertThat(category)
                 .contains(new Category(1, "漫画"));
@@ -190,7 +190,7 @@ class BookMapperTest {
     @Transactional
     void カテゴリーに指定した文字列が完全一致したデータを返す() {
         Optional<Category> category = bookMapper.findByCategory("小説");
-        assertThat(category).contains(new Category(3,"小説"));
+        assertThat(category).contains(new Category(3, "小説"));
     }
 
     @Test
@@ -225,5 +225,14 @@ class BookMapperTest {
     void カテゴリーと新しく採番されたIDが正常に登録されること() {
         Category category = new Category("エッセイ");
         bookMapper.insertCategory(category);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update-books.yml")
+    @Transactional
+    void IDで指定した書籍の購入履歴のみが更新できること() {
+        Book book = new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), true, 1);
+        bookMapper.updateBook(book);
     }
 }
