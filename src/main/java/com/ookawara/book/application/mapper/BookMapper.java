@@ -8,9 +8,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
-import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,29 +22,6 @@ public interface BookMapper {
     List<Book> findBy(@Param("category") String category,
                       @Param("name") String name,
                       @Param("isPurchased") Boolean isPurchased);
-
-    class BookSqlProvider implements ProviderMethodResolver {
-        public String findBy(@Param("category") String category,
-                             @Param("name") String name,
-                             @Param("isPurchased") Boolean isPurchased) {
-            return new SQL() {
-                {
-                    SELECT("*");
-                    FROM("books");
-                    JOIN("categories on books.category_id = categories.category_id");
-                    if (category != null) {
-                        WHERE("category like concat('%',#{category},'%')");
-                    }
-                    if (name != null) {
-                        WHERE("name like concat('%',#{name},'%')");
-                    }
-                    if (isPurchased != null) {
-                        WHERE("is_purchased = #{isPurchased}");
-                    }
-                }
-            }.toString();
-        }
-    }
 
     @Select("select * from books join categories on books.category_id = categories.category_id where book_id = #{bookId}")
     Optional<Book> findByBookId(int bookId);
@@ -68,6 +43,6 @@ public interface BookMapper {
     @Options(useGeneratedKeys = true, keyProperty = "categoryId")
     void insertCategory(Category category);
 
-    @Update("update books set name = #{name}, release_date = #{releaseDate}, is_purchased = #{isPurchased}, category_id = #{categoryId} where book_id = #{bookId}")
+    @UpdateProvider(BookSqlProvider.class)
     void updateBook(Book book);
 }

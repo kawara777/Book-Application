@@ -232,7 +232,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update-books.yml")
     @Transactional
     void IDで指定した書籍の購入履歴のみが更新できること() {
-        Book book = new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), true, 1);
+        Book book = new Book(2, null, null, true, null);
         bookMapper.updateBook(book);
     }
 }
