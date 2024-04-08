@@ -31,10 +31,10 @@ public interface BookMapper {
     Optional<Category> findByCategoryId(int categoryId);
 
     @Select("select * from books where name like #{name} and release_date like #{releaseDate} and is_purchased like #{isPurchased} and category_id like #{categoryId}")
-    Optional<Book> findByBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId);
+    Optional<Book> findBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId);
 
     @Select("select * from categories where category like #{category}")
-    Optional<Category> findByCategory(String category);
+    Optional<Category> findCategory(String category);
 
     @Insert("insert into books (name, release_date, is_purchased, category_id) values (#{name}, #{releaseDate}, #{isPurchased}, #{categoryId})")
     @Options(useGeneratedKeys = true, keyProperty = "bookId")

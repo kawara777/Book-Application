@@ -148,11 +148,11 @@ class BookServiceTest {
     @Test
     public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
         doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+                .when(bookMapper).findBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(BookDuplicateException.class)
                 .hasMessage("すでに登録されています。");
-        verify(bookMapper).findByBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        verify(bookMapper).findBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
     }
 
     @Test
@@ -167,10 +167,10 @@ class BookServiceTest {
     @Test
     public void すでに存在するカテゴリーを登録しようとしたときに例外のエラーメッセージを返すこと() {
         doReturn(Optional.of(new Category("漫画")))
-                .when(bookMapper).findByCategory("漫画");
+                .when(bookMapper).findCategory("漫画");
         assertThatThrownBy(() -> bookService.createCategory("漫画"))
                 .isInstanceOf(CategoryDuplicateException.class)
                 .hasMessage("すでに登録されています。");
-        verify(bookMapper).findByCategory("漫画");
+        verify(bookMapper).findCategory("漫画");
     }
 }

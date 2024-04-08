@@ -48,7 +48,7 @@ public class BookService {
 
     public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
         Book book = new Book(name, releaseDate, isPurchased, categoryId);
-        if (bookMapper.findByBook(book.getName(), book.getReleaseDate(), book.getIsPurchased(), book.getCategoryId()).isPresent()) {
+        if (bookMapper.findBook(book.getName(), book.getReleaseDate(), book.getIsPurchased(), book.getCategoryId()).isPresent()) {
             throw new BookDuplicateException("すでに登録されています。");
         } else {
             bookMapper.insertBook(book);
@@ -58,7 +58,7 @@ public class BookService {
 
     public Category createCategory(String category) {
         Category categoryName = new Category(category);
-        if (bookMapper.findByCategory(categoryName.getCategory()).isPresent()) {
+        if (bookMapper.findCategory(categoryName.getCategory()).isPresent()) {
             throw new CategoryDuplicateException("すでに登録されています。");
         } else {
             bookMapper.insertCategory(categoryName);
