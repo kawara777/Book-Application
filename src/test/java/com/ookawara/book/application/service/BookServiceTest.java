@@ -179,7 +179,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して全てのレコードを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
+        Book book = new Book(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
         assertThat(actual).isEqualTo(book);
@@ -191,7 +191,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して書籍名だけを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("鬼滅の刃 1", null, false, 0);
+        Book book = new Book(2, "鬼滅の刃 1", null, false, 0);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "鬼滅の刃 1", null, false, 0);
         assertThat(actual).isEqualTo(book);
@@ -203,7 +203,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して発売日だけを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("", LocalDate.of(2016, 7, 8), false, 0);
+        Book book = new Book(2, "", LocalDate.of(2016, 7, 8), false, 0);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "", LocalDate.of(2016, 7, 8), false, 0);
         assertThat(actual).isEqualTo(book);
@@ -215,7 +215,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して購入履歴だけを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("", null, true, 0);
+        Book book = new Book(2, "", null, true, 0);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "", null, true, 0);
         assertThat(actual).isEqualTo(book);
@@ -227,7 +227,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定してカテゴリーIDだけを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("", null, false, 2);
+        Book book = new Book(2, "", null, false, 2);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "", null, false, 2);
         assertThat(actual).isEqualTo(book);
@@ -239,7 +239,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して更新するレコード全てが元のデータと同じときに例外のメッセージを返すこと() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        doReturn(Optional.of(new Book("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
+        doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
         assertThatThrownBy(() -> bookService.updateBook(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1))
                 .isInstanceOf(BookNotUpdatedException.class)
