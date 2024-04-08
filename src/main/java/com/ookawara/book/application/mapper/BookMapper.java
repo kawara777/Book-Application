@@ -8,8 +8,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
-import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,33 +18,10 @@ public interface BookMapper {
     @Select("select * from books join categories on books.category_id = categories.category_id")
     List<Book> findAll();
 
-    @SelectProvider(SqlProvider.class)
+    @SelectProvider(BookSqlProvider.class)
     List<Book> findBy(@Param("category") String category,
                       @Param("name") String name,
                       @Param("isPurchased") Boolean isPurchased);
-
-    class SqlProvider implements ProviderMethodResolver {
-        public String findBy(@Param("category") String category,
-                             @Param("name") String name,
-                             @Param("isPurchased") Boolean isPurchased) {
-            return new SQL() {
-                {
-                    SELECT("*");
-                    FROM("books");
-                    JOIN("categories on books.category_id = categories.category_id");
-                    if (category != null) {
-                        WHERE("category like concat('%',#{category},'%')");
-                    }
-                    if (name != null) {
-                        WHERE("name like concat('%',#{name},'%')");
-                    }
-                    if (isPurchased != null) {
-                        WHERE("is_purchased = #{isPurchased}");
-                    }
-                }
-            }.toString();
-        }
-    }
 
     @Select("select * from books join categories on books.category_id = categories.category_id where book_id = #{bookId}")
     Optional<Book> findByBookId(int bookId);
@@ -66,4 +42,7 @@ public interface BookMapper {
     @Insert("insert into categories (category) values (#{category})")
     @Options(useGeneratedKeys = true, keyProperty = "categoryId")
     void insertCategory(Category category);
+
+    @UpdateProvider(BookSqlProvider.class)
+    void updateBook(Book book);
 }
