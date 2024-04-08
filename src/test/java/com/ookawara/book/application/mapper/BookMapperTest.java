@@ -220,7 +220,7 @@ class BookMapperTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @ExpectedDataSet(value = "datasets/create/create-categories.yml", ignoreCols = "category_id")
+    @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
     @Transactional
     void カテゴリーと新しく採番されたIDが正常に登録されること() {
         Category category = new Category("エッセイ");
