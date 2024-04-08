@@ -220,7 +220,7 @@ class BookMapperTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
+    @ExpectedDataSet(value = "datasets/create/create-categories.yml", ignoreCols = "category_id")
     @Transactional
     void カテゴリーと新しく採番されたIDが正常に登録されること() {
         Category category = new Category("エッセイ");
@@ -229,10 +229,46 @@ class BookMapperTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @ExpectedDataSet(value = "datasets/update-books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-allColumn.yml")
+    @Transactional
+    void IDで指定した書籍のID以外全て更新できること() {
+        Book book = new Book(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
+        bookMapper.updateBook(book);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-name.yml")
+    @Transactional
+    void IDで指定した書籍の名前のみが更新できること() {
+        Book book = new Book(2, "鬼滅の刃 1", null, false, null);
+        bookMapper.updateBook(book);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-releaseDate.yml")
+    @Transactional
+    void IDで指定した書籍の発売日のみが更新できること() {
+        Book book = new Book(2, null, LocalDate.of(2016, 7, 8), false, null);
+        bookMapper.updateBook(book);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-isPurchased.yml")
     @Transactional
     void IDで指定した書籍の購入履歴のみが更新できること() {
         Book book = new Book(2, null, null, true, null);
+        bookMapper.updateBook(book);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-categoryId.yml")
+    @Transactional
+    void IDで指定した書籍のカテゴリーIDのみが更新できること() {
+        Book book = new Book(2, null, null, false, 2);
         bookMapper.updateBook(book);
     }
 }
