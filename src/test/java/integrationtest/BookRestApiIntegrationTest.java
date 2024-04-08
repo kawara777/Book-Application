@@ -252,7 +252,7 @@ class BookRestApiIntegrationTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @ExpectedDataSet(value = "datasets/create-books.yml", ignoreCols = "book_id")
+    @ExpectedDataSet(value = "datasets/create/create-books.yml", ignoreCols = "book_id")
     @Transactional
     void 書籍データが正常に登録できること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
@@ -303,7 +303,7 @@ class BookRestApiIntegrationTest {
 
     @Test
     @DataSet("datasets/books.yml")
-    @ExpectedDataSet(value = "datasets/create-categories.yml", ignoreCols = "category_id")
+    @ExpectedDataSet(value = "datasets/create/create-categories.yml", ignoreCols = "category_id")
     @Transactional
     void カテゴリーが正常に登録できること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/categories")
