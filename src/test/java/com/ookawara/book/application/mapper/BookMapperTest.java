@@ -172,16 +172,16 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名に指定した文字列とカテゴリーIDに指定したIDが完全一致したデータを返す() {
-        Optional<Book> book = bookMapper.findByNameAndCategoryId("鬼滅の刃・1", 1);
+    void 指定した値が完全一致した本のデータを返す() {
+        Optional<Book> book = bookMapper.findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
         assertThat(book).contains(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名に指定した文字列とカテゴリーIDに指定したIDが一致しないとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findByNameAndCategoryId(null, 0);
+    void 指定した値がどれか一つでも一致しないとき空のデータを返す() {
+        Optional<Book> book = bookMapper.findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 0);
         assertThat(book).isEmpty();
     }
 
