@@ -179,7 +179,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して全てのレコードを正常に更新できること() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        Book book = new Book("鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
+        Book book = new Book(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
         doNothing().when(bookMapper).updateBook(book);
         Book actual = bookService.updateBook(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
         assertThat(actual).isEqualTo(book);
@@ -191,7 +191,7 @@ class BookServiceTest {
     public void 存在する本のIDを指定して更新するレコード全てが元のデータと同じときに例外のメッセージを返すこと() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
-        doReturn(Optional.of(new Book("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
+        doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
         assertThatThrownBy(() -> bookService.updateBook(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1))
                 .isInstanceOf(BookNotUpdatedException.class)
