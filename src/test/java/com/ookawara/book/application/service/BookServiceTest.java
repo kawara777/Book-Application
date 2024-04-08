@@ -188,7 +188,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void 存在する本のIDを指定してレコード全てが元のデータと同じときに例外のメッセージを返すこと() {
+    public void 存在する本のIDを指定して更新するレコード全てが元のデータと同じときに例外のメッセージを返すこと() {
         doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
                 .when(bookMapper).findByBookId(2);
         doReturn(Optional.of(new Book("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
