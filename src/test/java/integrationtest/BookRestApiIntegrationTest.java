@@ -345,4 +345,27 @@ class BookRestApiIntegrationTest {
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
     }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-allColumn.yml")
+    @Transactional
+    void 存在する本のIDを指定して全てのレコードを正常に更新できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016-07-08",
+                                    "isPurchased": true,
+                                    "categoryId": 2
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に更新されました。"
+                        }
+                        """));
+    }
 }

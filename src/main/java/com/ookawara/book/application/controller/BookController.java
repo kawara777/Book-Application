@@ -10,6 +10,7 @@ import com.ookawara.book.application.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,5 +62,12 @@ public class BookController {
         URI location = uriBuilder.path("/category/{categoryId}").buildAndExpand(category.getCategoryId()).toUri();
         CategoryResponse body = new CategoryResponse("正常に登録されました。");
         return ResponseEntity.created(location).body(body);
+    }
+
+    @PatchMapping("/books/{bookId}")
+    public ResponseEntity<BookResponse> patchBook(@PathVariable int bookId, @RequestBody @Validated BookRequest bookRequest) {
+        bookService.updateBook(bookId, bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
+        BookResponse body = new BookResponse("正常に更新されました。");
+        return ResponseEntity.ok(body);
     }
 }
