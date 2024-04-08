@@ -241,7 +241,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-name.yml")
     @Transactional
     void IDで指定した書籍の名前のみが更新できること() {
-        Book book = new Book(2, "鬼滅の刃 1", null, false, null);
+        Book book = new Book(2, "鬼滅の刃 1", null, false, 0);
         bookMapper.updateBook(book);
     }
 
@@ -250,7 +250,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-releaseDate.yml")
     @Transactional
     void IDで指定した書籍の発売日のみが更新できること() {
-        Book book = new Book(2, null, LocalDate.of(2016, 7, 8), false, null);
+        Book book = new Book(2, "", LocalDate.of(2016, 7, 8), false, 0);
         bookMapper.updateBook(book);
     }
 
@@ -259,7 +259,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-isPurchased.yml")
     @Transactional
     void IDで指定した書籍の購入履歴のみが更新できること() {
-        Book book = new Book(2, null, null, true, null);
+        Book book = new Book(2, "", null, true, 0);
         bookMapper.updateBook(book);
     }
 
@@ -268,7 +268,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-categoryId.yml")
     @Transactional
     void IDで指定した書籍のカテゴリーIDのみが更新できること() {
-        Book book = new Book(2, null, null, false, 2);
+        Book book = new Book(2, "", null, false, 2);
         bookMapper.updateBook(book);
     }
 }
