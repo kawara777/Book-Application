@@ -67,7 +67,7 @@ public class BookService {
         }
     }
 
-    public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
+    public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
         bookMapper.findByBookId(bookId).orElseThrow(
                 () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
         Book book = new Book(name, releaseDate, isPurchased, categoryId);

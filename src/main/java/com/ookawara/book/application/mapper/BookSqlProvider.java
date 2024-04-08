@@ -31,7 +31,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
         return new SQL() {
             {
                 UPDATE("books");
-                if (book.getName() != null) {
+                if (!book.getName().isBlank()) {
                     SET("name = #{name}");
                 }
                 if (book.getReleaseDate() != null) {
@@ -40,7 +40,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 if (book.getIsPurchased() != null) {
                     SET("is_purchased = #{isPurchased}");
                 }
-                if (book.getCategoryId() != null) {
+                if (book.getCategoryId() >= 1) {
                     SET("category_id = #{categoryId}");
                 }
                 WHERE("book_id = #{bookId}");
