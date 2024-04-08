@@ -4,6 +4,7 @@ import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.BookDuplicateException;
 import com.ookawara.book.application.exception.BookNotFoundException;
+import com.ookawara.book.application.exception.BookNotUpdatedException;
 import com.ookawara.book.application.exception.CategoryDuplicateException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
@@ -63,6 +64,18 @@ public class BookService {
         } else {
             bookMapper.insertCategory(categoryName);
             return categoryName;
+        }
+    }
+
+    public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
+        bookMapper.findByBookId(bookId).orElseThrow(
+                () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
+        Book book = new Book(name, releaseDate, isPurchased, categoryId);
+        if (bookMapper.findByBook(book.getName(), book.getReleaseDate(), book.getIsPurchased(), book.getCategoryId()).isPresent()) {
+            throw new BookNotUpdatedException("book：" + bookId + " のデータは更新されていません。");
+        } else {
+            bookMapper.updateBook(book);
+            return book;
         }
     }
 }

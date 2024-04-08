@@ -4,6 +4,7 @@ import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.BookDuplicateException;
 import com.ookawara.book.application.exception.BookNotFoundException;
+import com.ookawara.book.application.exception.BookNotUpdatedException;
 import com.ookawara.book.application.exception.CategoryDuplicateException;
 import com.ookawara.book.application.exception.CategoryNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
@@ -172,5 +173,30 @@ class BookServiceTest {
                 .isInstanceOf(CategoryDuplicateException.class)
                 .hasMessage("すでに登録されています。");
         verify(bookMapper).findByCategory("漫画");
+    }
+
+    @Test
+    public void 存在する本のIDを指定して全てのレコードを正常に更新できること() {
+        doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
+                .when(bookMapper).findByBookId(2);
+        Book book = new Book("鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
+        doNothing().when(bookMapper).updateBook(book);
+        Book actual = bookService.updateBook(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
+        assertThat(actual).isEqualTo(book);
+        verify(bookMapper).findByBookId(2);
+        verify(bookMapper).updateBook(book);
+    }
+
+    @Test
+    public void 存在する本のIDを指定してレコード全てが元のデータと同じときに例外のメッセージを返すこと() {
+        doReturn(Optional.of(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
+                .when(bookMapper).findByBookId(2);
+        doReturn(Optional.of(new Book("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1)))
+                .when(bookMapper).findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
+        assertThatThrownBy(() -> bookService.updateBook(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1))
+                .isInstanceOf(BookNotUpdatedException.class)
+                .hasMessage("book：" + 2 + " のデータは更新されていません。");
+        verify(bookMapper).findByBookId(2);
+        verify(bookMapper).findByBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
     }
 }
