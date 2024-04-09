@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
+import java.time.LocalDate;
+
 public class BookSqlProvider implements ProviderMethodResolver {
     public String findBy(@Param("category") String category,
                          @Param("name") String name,
@@ -14,10 +16,10 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 SELECT("*");
                 FROM("books");
                 JOIN("categories on books.category_id = categories.category_id");
-                if (category != null) {
+                if (category != null && !category.isEmpty()) {
                     WHERE("category like concat('%',#{category},'%')");
                 }
-                if (name != null) {
+                if (name != null && !name.isEmpty()) {
                     WHERE("name like concat('%',#{name},'%')");
                 }
                 if (isPurchased != null) {
@@ -31,7 +33,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
         return new SQL() {
             {
                 UPDATE("books");
-                if (book.getName() != null) {
+                if (book.getName() != null && !book.getName().isBlank()) {
                     SET("name = #{name}");
                 }
                 if (book.getReleaseDate() != null) {
@@ -40,7 +42,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 if (book.getIsPurchased() != null) {
                     SET("is_purchased = #{isPurchased}");
                 }
-                if (book.getCategoryId() != null) {
+                if (book.getCategoryId() >= 1) {
                     SET("category_id = #{categoryId}");
                 }
                 WHERE("book_id = #{bookId}");
@@ -48,4 +50,3 @@ public class BookSqlProvider implements ProviderMethodResolver {
         }.toString();
     }
 }
-
