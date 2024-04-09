@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.time.LocalDate;
@@ -30,8 +31,11 @@ public interface BookMapper {
     @Select("select * from categories where category_id = #{categoryId}")
     Optional<Category> findByCategoryId(int categoryId);
 
-    @Select("select * from books where name like #{name} and release_date like #{releaseDate} and is_purchased like #{isPurchased} and category_id like #{categoryId}")
-    Optional<Book> findBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId);
+    @SelectProvider(BookSqlProvider.class)
+    List<Book> findBook(@Param("name") String name,
+                        @Param("releaseDate") LocalDate releaseDate,
+                        @Param("isPurchased") Boolean isPurchased,
+                        @Param("categoryId") int categoryId);
 
     @Select("select * from categories where category like #{category}")
     Optional<Category> findCategory(String category);
