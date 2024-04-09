@@ -147,7 +147,8 @@ class BookServiceTest {
 
     @Test
     public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
-        doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+        List<Book> books = List.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+        doReturn(books)
                 .when(bookMapper).findBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(BookDuplicateException.class)
