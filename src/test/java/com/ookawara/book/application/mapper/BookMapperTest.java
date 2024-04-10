@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DBRider
 @MybatisTest
@@ -337,7 +338,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-name.yml")
     @Transactional
     void IDで指定した書籍の名前のみが更新できること() {
-        Book book = new Book(2, "鬼滅の刃 1", null, null, 0);
+        Book book = new Book(2, "鬼滅の刃 1", null, null, null);
         bookMapper.updateBook(book);
     }
 
@@ -346,7 +347,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-releaseDate.yml")
     @Transactional
     void IDで指定した書籍の発売日のみが更新できること() {
-        Book book = new Book(2, null, LocalDate.of(2016, 7, 8), null, 0);
+        Book book = new Book(2, null, LocalDate.of(2016, 7, 8), null, null);
         bookMapper.updateBook(book);
     }
 
@@ -355,7 +356,7 @@ class BookMapperTest {
     @ExpectedDataSet(value = "datasets/update/update-books-isPurchased.yml")
     @Transactional
     void IDで指定した書籍の購入履歴のみが更新できること() {
-        Book book = new Book(2, "", null, true, 0);
+        Book book = new Book(2, "", null, true, null);
         bookMapper.updateBook(book);
     }
 
@@ -366,6 +367,15 @@ class BookMapperTest {
     void IDで指定した書籍のカテゴリーIDのみが更新できること() {
         Book book = new Book(2, " ", null, null, 2);
         bookMapper.updateBook(book);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void IDで指定した書籍のカテゴリーIDに0以下を指定したときに例外がスローされること() {
+        Book book = new Book(2, " ", null, null, 0);
+        assertThatThrownBy(() -> bookMapper.updateBook(book))
+                .isInstanceOf(org.mybatis.spring.MyBatisSystemException.class);
     }
 
     @Test

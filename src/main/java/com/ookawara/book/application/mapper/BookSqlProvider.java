@@ -42,8 +42,12 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 if (book.getIsPurchased() != null) {
                     SET("is_purchased = #{isPurchased}");
                 }
-                if (book.getCategoryId() >= 1) {
-                    SET("category_id = #{categoryId}");
+                if (book.getCategoryId() != null) {
+                    if (book.getCategoryId() >= 1) {
+                        SET("category_id = #{categoryId}");
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
                 }
                 WHERE("book_id = #{bookId}");
             }
