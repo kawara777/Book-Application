@@ -373,9 +373,9 @@ class BookMapperTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void IDで指定した書籍のカテゴリーIDに0以下を指定したときに例外がスローされること() {
-        Book book = new Book(2, " ", null, null, 0);
+        Book book = new Book(2, " ", null, null, -1);
         assertThatThrownBy(() -> bookMapper.updateBook(book))
-                .isInstanceOf(org.mybatis.spring.MyBatisSystemException.class);
+                .hasCause(new IllegalArgumentException("1以上の整数を入力してください。"));
     }
 
     @Test
