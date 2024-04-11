@@ -376,7 +376,7 @@ class BookMapperTest {
     void IDで指定した書籍のカテゴリーIDに0以下を指定したときに例外がスローされること() {
         Book book = new Book(2, " ", null, null, 0);
         assertThatThrownBy(() -> bookMapper.updateBook(book))
-                .isInstanceOf(MyBatisSystemException.class);
+                .hasRootCause(new IllegalArgumentException("1以上の整数を入力してください。"));
     }
 
     @Test
