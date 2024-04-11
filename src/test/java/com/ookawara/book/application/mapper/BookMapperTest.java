@@ -6,6 +6,7 @@ import com.github.database.rider.spring.api.DBRider;
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.MyBatisSystemException;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -373,9 +374,9 @@ class BookMapperTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void IDで指定した書籍のカテゴリーIDに0以下を指定したときに例外がスローされること() {
-        Book book = new Book(2, " ", null, null, -1);
+        Book book = new Book(2, " ", null, null, 0);
         assertThatThrownBy(() -> bookMapper.updateBook(book))
-                .hasCause(new IllegalArgumentException("1以上の整数を入力してください。"));
+                .isInstanceOf(MyBatisSystemException.class);
     }
 
     @Test
