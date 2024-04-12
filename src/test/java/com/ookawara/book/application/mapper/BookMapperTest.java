@@ -6,7 +6,6 @@ import com.github.database.rider.spring.api.DBRider;
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.MyBatisSystemException;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -28,29 +27,18 @@ class BookMapperTest {
     @Autowired
     BookMapper bookMapper;
 
+//    GET
+
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void すべての本のデータが取得できること() {
         List<Book> books = bookMapper.findAll();
-        assertThat(books)
-                .hasSize(3)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(3).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/delete-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/delete-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void レコードが存在しない時に空のデータが返されること() {
         List<Book> books = bookMapper.findAll();
@@ -58,87 +46,43 @@ class BookMapperTest {
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
         List<Book> books = bookMapper.findBy("ノ", "", null);
-        assertThat(books)
-                .hasSize(1)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル")
-                );
+        assertThat(books).hasSize(1).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 指定した文字列を含む書籍名に該当する全ての本のデータを取得() {
         List<Book> books = bookMapper.findBy("", "の", null);
-        assertThat(books)
-                .hasSize(2)
-                .containsOnly(
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(2).containsOnly(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 購入済みの全ての本のデータを取得() {
         List<Book> books = bookMapper.findBy("", "", true);
-        assertThat(books)
-                .hasSize(2)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(2).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 未購入の全ての本のデータを取得() {
         List<Book> books = bookMapper.findBy("", "", false);
-        assertThat(books)
-                .hasSize(1)
-                .containsOnly(
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画")
-                );
+        assertThat(books).hasSize(1).containsOnly(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"));
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql", "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 全てにnullを指定したときsql文の条件により全ての本のデータを返すこと() {
         List<Book> books = bookMapper.findBy(null, null, null);
-        assertThat(books)
-                .hasSize(3)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(3).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
@@ -146,13 +90,7 @@ class BookMapperTest {
     @Transactional
     void カテゴリーに空文字を書籍名と購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
         List<Book> books = bookMapper.findBy("", null, null);
-        assertThat(books)
-                .hasSize(3)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(3).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
@@ -160,13 +98,7 @@ class BookMapperTest {
     @Transactional
     void 書籍名に空文字をカテゴリーと購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
         List<Book> books = bookMapper.findBy(null, "", null);
-        assertThat(books)
-                .hasSize(3)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(3).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
@@ -174,13 +106,7 @@ class BookMapperTest {
     @Transactional
     void 書籍名とカテゴリーに空文字を購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
         List<Book> books = bookMapper.findBy("", "", null);
-        assertThat(books)
-                .hasSize(3)
-                .containsOnly(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
-                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
-                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説")
-                );
+        assertThat(books).hasSize(3).containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"), new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"), new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
@@ -204,10 +130,7 @@ class BookMapperTest {
     @Transactional
     void 存在する本のIDを指定したときに正常に本のデータを返す() {
         Optional<Book> book = bookMapper.findByBookId(1);
-        assertThat(book)
-                .contains(
-                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル")
-                );
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
     }
 
     @Test
@@ -223,8 +146,7 @@ class BookMapperTest {
     @Transactional
     void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返す() {
         Optional<Category> category = bookMapper.findByCategoryId(1);
-        assertThat(category)
-                .contains(new Category(1, "漫画"));
+        assertThat(category).contains(new Category(1, "漫画"));
     }
 
     @Test
@@ -235,52 +157,106 @@ class BookMapperTest {
         assertThat(category).isEmpty();
     }
 
+//    POST
+
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 指定した全てのレコードが完全一致した本のデータを返す() {
-        Optional<Book> book = bookMapper.findBook("鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
+    void 本のIDを指定せずに全てのレコードが完全一致したときその本のデータを返す() {
+        Optional<Book> book = bookMapper.findBookBy(null, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
         assertThat(book).contains(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 指定した全てのレコードが一致しないとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findBook("", LocalDate.of(2000, 1, 1), null, 0);
+    void 本のIDを指定せず全てのレコードが一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(null, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 10);
         assertThat(book).isEmpty();
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名のみ指定したとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findBook("鬼滅の刃・1", null, null, 0);
-        assertThat(book).isEmpty();
+    void 指定した全てのレコードがnullの時値を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, null, null, null, null)).hasRootCause(new IllegalArgumentException("値を入力してください。"));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 発売日のみ指定したとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findBook(" ", LocalDate.of(2016, 6, 8), null, 0);
-        assertThat(book).isEmpty();
+    void 書籍名に空文字をそれ以外にnullを指定した時値を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "", null, null, null)).hasRootCause(new IllegalArgumentException("値を入力してください。"));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 購入状況のみ指定したとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findBook(null, null, false, 0);
-        assertThat(book).isEmpty();
+    void 書籍名に半角スペースのみをそれ以外にnullを指定した時値を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, " ", null, null, null)).hasRootCause(new IllegalArgumentException("値を入力してください。"));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void カテゴリーIDのみ指定したとき空のデータを返す() {
-        Optional<Book> book = bookMapper.findBook(" ", null, null, 1);
-        assertThat(book).isEmpty();
+    void 本のIDを指定せず存在する書籍名のみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "鬼滅の刃・1", null, null, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず存在しない書籍名のみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "鬼滅の刃 1", null, null, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず存在する書籍名と購入状況を指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "鬼滅の刃・1", null, false, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず存在しない書籍名と購入状況を指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "鬼滅の刃 1", null, false, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず発売日のみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, null, LocalDate.now(), false, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず購入状況のみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "", null, false, null)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず存在するカテゴリーIDのみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "", null, null, 1)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず存在しないカテゴリーIDのみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "", null, null, 999999999)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定せず0以下のカテゴリーIDのみ指定するときbook_idに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(null, "", null, null, 0)).hasRootCause(new IllegalArgumentException("book_idに1以上の整数を入力してください。"));
     }
 
     @Test
@@ -300,20 +276,14 @@ class BookMapperTest {
     }
 
     @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/reset-book-id.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
+    @Sql(scripts = {"classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/reset-book-id.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
     void 本の情報と新しく採番されたIDが正常に登録されること() {
         Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
         bookMapper.insertBook(book);
 
         List<Book> books = bookMapper.findAll();
-        assertThat(books)
-                .hasSize(1)
-                .containsOnly(
-                        new Book(1, "鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1, "漫画"));
+        assertThat(books).hasSize(1).containsOnly(new Book(1, "鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1, "漫画"));
     }
 
     @Test
@@ -325,11 +295,125 @@ class BookMapperTest {
         bookMapper.insertCategory(category);
     }
 
+//    PATCH
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し全てのレコードが完全一致したときその本のデータ全てを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し全てのレコードが一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "ノーゲーム・ノーライフ 1", LocalDate.of(2012, 5, 30), true, 2);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し全てのレコードにnullを指定したときその本のデータ全てを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, null, null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し書籍名に空文字を他はnullを指定したときその本のデータ全てを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し書籍名に半角スペースのみを他はnullを指定したときその本のデータ全てを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, " ", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと書籍名が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "ノーゲーム・ノーライフ・1", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと書籍名が一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "ノーゲーム・ノーライフ 1", null, null, null);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと発売日が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, null, LocalDate.of(2012, 4, 30), null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと購入状況が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, "", null, true, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと存在するカテゴリーIDが完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, " ", null, null, 2);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDをと存在しないカテゴリーIDを指定したとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookBy(1, " ", null, null, 999999999);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDと0以下のカテゴリーIDを指定したときcategory_idには1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(1, " ", null, null, 0))
+                .hasRootCause(new IllegalArgumentException("category_idには1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在しない本のIDを指定したときに空のデータが返されること() {
+        Optional<Book> book = bookMapper.findBookBy(999999999, "ノーゲーム・ノーライフ・1", null, false, 999999999);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDに0以下の整数を指定したときにbook_idには1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookBy(0, "ノーゲーム・ノーライフ 1", null, null, 0))
+                .hasRootCause(new IllegalArgumentException("book_idには1以上の整数を入力してください。"));
+    }
+
     @Test
     @DataSet("datasets/books.yml")
     @ExpectedDataSet(value = "datasets/update/update-books-allColumn.yml")
     @Transactional
-    void IDで指定した書籍のID以外全て更新できること() {
+    void IDで指定した書籍のデータ全て更新できること() {
         Book book = new Book(2, "鬼滅の刃 1", LocalDate.of(2016, 7, 8), true, 2);
         bookMapper.updateBook(book);
     }
@@ -375,8 +459,7 @@ class BookMapperTest {
     @Transactional
     void IDで指定した書籍のカテゴリーIDに0以下を指定したときに例外がスローされること() {
         Book book = new Book(2, " ", null, null, 0);
-        assertThatThrownBy(() -> bookMapper.updateBook(book))
-                .hasRootCause(new IllegalArgumentException("1以上の整数を入力してください。"));
+        assertThatThrownBy(() -> bookMapper.updateBook(book)).hasRootCause(new IllegalArgumentException("1以上の整数を入力してください。"));
     }
 
     @Test
