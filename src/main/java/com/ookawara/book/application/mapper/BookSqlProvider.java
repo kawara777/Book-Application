@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
-import java.time.LocalDate;
-
 public class BookSqlProvider implements ProviderMethodResolver {
     public String findBy(@Param("category") String category,
                          @Param("name") String name,
@@ -42,8 +40,12 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 if (book.getIsPurchased() != null) {
                     SET("is_purchased = #{isPurchased}");
                 }
-                if (book.getCategoryId() >= 1) {
-                    SET("category_id = #{categoryId}");
+                if (book.getCategoryId() != null) {
+                    if (book.getCategoryId() >= 1) {
+                        SET("category_id = #{categoryId}");
+                    } else {
+                        throw new IllegalArgumentException("1以上の整数を入力してください。");
+                    }
                 }
                 WHERE("book_id = #{bookId}");
             }
