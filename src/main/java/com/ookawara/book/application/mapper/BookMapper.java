@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Mapper
 public interface BookMapper {
+    //    GET
     @Select("select * from books join categories on books.category_id = categories.category_id")
     List<Book> findAll();
 
@@ -30,12 +31,7 @@ public interface BookMapper {
     @Select("select * from categories where category_id = #{categoryId}")
     Optional<Category> findByCategoryId(int categoryId);
 
-    @Select("select * from books where name like #{name} and release_date like #{releaseDate} and is_purchased like #{isPurchased} and category_id like #{categoryId}")
-    Optional<Book> findBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId);
-
-    @Select("select * from categories where category like #{category}")
-    Optional<Category> findCategory(String category);
-
+    //    POST
     @Insert("insert into books (name, release_date, is_purchased, category_id) values (#{name}, #{releaseDate}, #{isPurchased}, #{categoryId})")
     @Options(useGeneratedKeys = true, keyProperty = "bookId")
     void insertBook(Book book);
@@ -44,6 +40,16 @@ public interface BookMapper {
     @Options(useGeneratedKeys = true, keyProperty = "categoryId")
     void insertCategory(Category category);
 
+    @SelectProvider(BookSqlProvider.class)
+    Optional<Book> findBookBy(@Param("name") String name,
+                              @Param("releaseDate") LocalDate releaseDate,
+                              @Param("isPurchased") Boolean isPurchased,
+                              @Param("categoryId") int categoryId);
+
+    @Select("select * from categories where category like #{category}")
+    Optional<Category> findCategory(String category);
+
+    //    PATCH
     @UpdateProvider(BookSqlProvider.class)
     void updateBook(Book book);
 }
