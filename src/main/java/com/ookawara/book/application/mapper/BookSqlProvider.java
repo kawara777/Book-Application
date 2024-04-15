@@ -55,7 +55,41 @@ public class BookSqlProvider implements ProviderMethodResolver {
             }
         }.toString();
     }
-    
+
+    public String findBookByBookIdAnd(@Param("bookId") int bookId,
+                                      @Param("name") String name,
+                                      @Param("releaseDate") LocalDate releaseDate,
+                                      @Param("isPurchased") Boolean isPurchased,
+                                      @Param("categoryId") Integer categoryId) {
+        return new SQL() {
+            {
+                if (bookId >= 1) {
+                    SELECT("*");
+                    FROM("books");
+                    WHERE("book_id = #{bookId}");
+                    if (name != null && !name.isBlank()) {
+                        WHERE("name = #{name}");
+                    }
+                    if (releaseDate != null) {
+                        WHERE("release_date = #{releaseDate}");
+                    }
+                    if (isPurchased != null) {
+                        WHERE("is_purchased = #{isPurchased}");
+                    }
+                    if (categoryId != null) {
+                        if (categoryId >= 1) {
+                            WHERE("category_id = #{categoryId}");
+                        } else {
+                            throw new IllegalArgumentException("categoryIdに1以上の整数を入力してください。");
+                        }
+                    }
+                } else {
+                    throw new IllegalArgumentException("bookIdに1以上の整数を入力してください。");
+                }
+            }
+        }.toString();
+    }
+
     public String updateBook(Book book) {
         return new SQL() {
             {

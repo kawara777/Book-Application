@@ -50,6 +50,13 @@ public interface BookMapper {
     Optional<Category> findCategory(String category);
 
     //    PATCH
+    @SelectProvider(BookSqlProvider.class)
+    Optional<Book> findBookByBookIdAnd(@Param("bookId") int bookId,
+                                       @Param("name") String name,
+                                       @Param("releaseDate") LocalDate releaseDate,
+                                       @Param("isPurchased") Boolean isPurchased,
+                                       @Param("categoryId") Integer categoryId);
+
     @UpdateProvider(BookSqlProvider.class)
     void updateBook(Book book);
 }

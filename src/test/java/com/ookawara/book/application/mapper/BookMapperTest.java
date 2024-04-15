@@ -333,6 +333,126 @@ class BookMapperTest {
 
     @Test
     @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し他全てのレコードが完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し他全てのレコードが一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "ノーゲーム・ノーライフ 1", LocalDate.of(2012, 5, 30), false, 3);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し他レコードのうち一つでも一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "ノーゲーム・ノーライフ 1", LocalDate.of(2012, 4, 30), true, 2);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し他全てのレコードにnullを指定したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, null, null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し書籍名に空文字を他はnullを指定したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し書籍名に半角スペースのみを他はnullを指定したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, " ", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 指定した本のIDと書籍名が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "ノーゲーム・ノーライフ・1", null, null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 指定した本のIDと書籍名が一致しないとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "ノーゲーム・ノーライフ 1", null, null, null);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 指定した本のIDと発売日が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, null, LocalDate.of(2012, 4, 30), null, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 市営した本のIDと購入状況が完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, "", null, true, null);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 指定した本のIDとカテゴリーIDが完全一致したときその本のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, " ", null, null, 2);
+        assertThat(book).contains(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し存在しないカテゴリーIDを指定したとき空のデータを返すこと() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(1, " ", null, null, 999999999);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDを指定し0以下のカテゴリーIDを指定したときcategoryIdに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookByBookIdAnd(1, " ", null, null, 0))
+                .hasRootCause(new IllegalArgumentException("categoryIdに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 存在しない本のIDを指定したときに空のデータが返されること() {
+        Optional<Book> book = bookMapper.findBookByBookIdAnd(999999999, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 本のIDに0以下の整数を指定したときにbookIdに1以上の整数を入力してくださいというエラーメッセージが返されること() {
+        assertThatThrownBy(() -> bookMapper.findBookByBookIdAnd(0, "ノーゲーム・ノーライフ 1", null, null, 0))
+                .hasRootCause(new IllegalArgumentException("bookIdに1以上の整数を入力してください。"));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
     @ExpectedDataSet(value = "datasets/update/update-books-allColumn.yml")
     @Transactional
     void IDで指定した書籍のデータ全て更新できること() {
