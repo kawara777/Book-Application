@@ -41,7 +41,6 @@ public class BookService {
     }
 
     public Category findCategory(int categoryId) {
-//        32~37行目を以下のように記述できる
         return bookMapper.findByCategoryId(categoryId).orElseThrow(
                 () -> new CategoryNotFoundException("category：" + categoryId + " のデータはありません。"));
     }
@@ -68,5 +67,19 @@ public class BookService {
             bookMapper.insertCategory(categoryName);
             return categoryName;
         }
+    }
+
+    public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
+//        # 49~59行目を以下のような形で記述できる
+        bookMapper.findByBookId(bookId).orElseThrow(
+                () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
+        if (categoryId != null && bookMapper.findByCategoryId(categoryId).isEmpty()) {
+            throw new CategoryNotFoundException("categoryId：" + categoryId + " のデータがありません。");
+        } else {
+            Book book = new Book(bookId, name, releaseDate, isPurchased, categoryId);
+            bookMapper.updateBook(book);
+            return book;
+        }
+
     }
 }
