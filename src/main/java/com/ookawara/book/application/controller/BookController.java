@@ -1,6 +1,6 @@
 package com.ookawara.book.application.controller;
 
-import com.ookawara.book.application.controller.request.BookRequest;
+import com.ookawara.book.application.controller.request.BookCreateRequest;
 import com.ookawara.book.application.controller.request.CategoryRequest;
 import com.ookawara.book.application.controller.response.BookResponse;
 import com.ookawara.book.application.controller.response.CategoryResponse;
@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<BookResponse> postBook(@RequestBody @Validated BookRequest bookRequest, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<BookResponse> postBook(@RequestBody @Validated BookCreateRequest bookRequest, UriComponentsBuilder uriBuilder) {
         Book book = bookService.createBook(bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
         URI location = uriBuilder.path("/book/{id}").buildAndExpand(book.getBookId()).toUri();
         BookResponse body = new BookResponse("正常に登録されました。");
