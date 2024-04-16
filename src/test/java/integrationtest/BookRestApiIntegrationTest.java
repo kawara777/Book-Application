@@ -30,6 +30,8 @@ class BookRestApiIntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
+//    GET
+
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
@@ -250,6 +252,8 @@ class BookRestApiIntegrationTest {
         )));
     }
 
+//    POST
+
     @Test
     @DataSet("datasets/books.yml")
     @ExpectedDataSet(value = "datasets/create/create-books.yml", ignoreCols = "book_id")
@@ -295,6 +299,34 @@ class BookRestApiIntegrationTest {
                     "status": "409",
                     "error": "Conflict",
                     "message": "すでに登録されています。",
+                    "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 登録する書籍データに存在しないカテゴリーIDを指定したときに例外のエラーメッセージを返すこと() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "ノーゲーム・ノーライフ・1",
+                                    "releaseDate": "2012-04-30",
+                                    "isPurchased": true,
+                                    "categoryId": 100
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "404",
+                    "error": "Not Found",
+                    "message": "categoryId：100 のデータがありません。",
                     "path": "/books"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
