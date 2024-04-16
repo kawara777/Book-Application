@@ -138,21 +138,34 @@ class BookServiceTest {
 
     @Test
     public void 本のデータを正常に登録できること() {
+        doReturn(Optional.of(new Category(1, "漫画"))).when(bookMapper).findByCategoryId(1);
         Book book = new Book("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
         doNothing().when(bookMapper).insertBook(book);
         Book actual = bookService.createBook("鬼滅の刃・2", LocalDate.of(2016, 8, 9), false, 1);
         assertThat(actual).isEqualTo(book);
+        verify(bookMapper).findByCategoryId(1);
         verify(bookMapper).insertBook(book);
     }
 
     @Test
     public void すでに存在する書籍データを登録しようとしたときに例外のエラーメッセージを返すこと() {
+        doReturn(Optional.of(new Category(2, "ライトノベル"))).when(bookMapper).findByCategoryId(2);
         doReturn(Optional.of(new Book("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
                 .when(bookMapper).findBookBy("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(BookDuplicateException.class)
                 .hasMessage("すでに登録されています。");
+        verify(bookMapper).findByCategoryId(2);
         verify(bookMapper).findBookBy("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+    }
+
+    @Test
+    public void 登録する書籍データに存在しないカテゴリーIDを指定したときに例外のエラーメッセージを返すこと() {
+        doReturn(Optional.empty()).when(bookMapper).findByCategoryId(999999999);
+        assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 999999999))
+                .isInstanceOf(CategoryNotFoundException.class)
+                .hasMessage("categoryId：" + 999999999 + " のデータがありません。");
+        verify(bookMapper).findByCategoryId(999999999);
     }
 
     @Test
