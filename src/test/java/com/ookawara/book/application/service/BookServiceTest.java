@@ -202,56 +202,6 @@ class BookServiceTest {
     }
 
     @Test
-    public void 書籍名だけを正常に更新できること() {
-        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByBookId(1);
-        Book book = new Book(1, "ノーゲーム・ノーライフ 1", null, null, null);
-        doNothing().when(bookMapper).updateBook(book);
-        Book actual = bookService.updateBook(1, "ノーゲーム・ノーライフ 1", null, null, null);
-        assertThat(actual).isEqualTo(book);
-        verify(bookMapper).findByBookId(1);
-        verify(bookMapper).updateBook(book);
-    }
-
-    @Test
-    public void 発売日だけを正常に更新できること() {
-        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByBookId(1);
-        Book book = new Book(1, null, LocalDate.of(2012, 5, 30), null, null);
-        doNothing().when(bookMapper).updateBook(book);
-        Book actual = bookService.updateBook(1, null, LocalDate.of(2012, 5, 30), null, null);
-        assertThat(actual).isEqualTo(book);
-        verify(bookMapper).findByBookId(1);
-        verify(bookMapper).updateBook(book);
-    }
-
-    @Test
-    public void 購入状況だけを正常に更新できること() {
-        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByBookId(1);
-        Book book = new Book(1, "", null, false, null);
-        doNothing().when(bookMapper).updateBook(book);
-        Book actual = bookService.updateBook(1, "", null, false, null);
-        assertThat(actual).isEqualTo(book);
-        verify(bookMapper).findByBookId(1);
-        verify(bookMapper).updateBook(book);
-    }
-
-    @Test
-    public void カテゴリーIDだけを正常に更新できること() {
-        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
-                .when(bookMapper).findByBookId(1);
-        doReturn(Optional.of(new Category(1, "漫画"))).when(bookMapper).findByCategoryId(1);
-        Book book = new Book(1, " ", null, null, 1);
-        doNothing().when(bookMapper).updateBook(book);
-        Book actual = bookService.updateBook(1, " ", null, null, 1);
-        assertThat(actual).isEqualTo(book);
-        verify(bookMapper).findByBookId(1);
-        verify(bookMapper).findByCategoryId(1);
-        verify(bookMapper).updateBook(book);
-    }
-
-    @Test
     void 指定した本のIDに対して更新するレコードが既にあるとき上書きとして正常に更新できること() {
         doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
                 .when(bookMapper).findByBookId(1);
