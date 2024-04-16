@@ -40,7 +40,7 @@ public class BookCreateRequest {
         return isPurchased;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 }
