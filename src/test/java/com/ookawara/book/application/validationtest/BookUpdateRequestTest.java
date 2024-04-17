@@ -24,7 +24,7 @@ class BookUpdateRequestTest {
     }
 
     @Test
-    void releaseDateが未来の年月日のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
+    void 発売日が未来の年月日のときバリーデーションエラーが発生すること() {
         BookUpdateRequest bookRequest = new BookUpdateRequest("鬼滅の刃・1", LocalDate.of(9999, 12, 31), false, 1);
         Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
@@ -34,7 +34,7 @@ class BookUpdateRequestTest {
     }
 
     @Test
-    void categoryIdが1より小さい数字のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
+    void カテゴリーIDが1より小さい数字のときバリーデーションエラーが発生すること() {
         BookUpdateRequest bookRequest = new BookUpdateRequest("鬼滅の刃・1", LocalDate.now(), false, 0);
         Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
@@ -44,7 +44,7 @@ class BookUpdateRequestTest {
     }
 
     @Test
-    void releaseDateとcategoryIdがバリーデーションエラーの時各項目のエラーメッセージが設定したものになって全て返されること() {
+    void 発売日とカテゴリーIDのバリデーションエラーが同時に発生すること() {
         BookUpdateRequest bookRequest = new BookUpdateRequest("", LocalDate.of(9999, 12, 31), false, 0);
         Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(2);
