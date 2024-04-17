@@ -377,4 +377,105 @@ class BookRestApiIntegrationTest {
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
     }
+
+//    PATCH
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-allColumn.yml")
+    @Transactional
+    void 書籍データが正常に更新できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016-07-08",
+                                    "isPurchased": true,
+                                    "categoryId": 2
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に更新されました。"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-name.yml")
+    @Transactional
+    void 書籍名のみ正常に更新できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に更新されました。"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 指定した本のIDが存在しないときに例外のエラーメッセージを返すこと() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.patch("/books/0")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016-07-08",
+                                    "isPurchased": true,
+                                    "categoryId": 1
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "404",
+                    "error": "Not Found",
+                    "message": "book：0 のデータはありません。",
+                    "path": "/books/0"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 更新する書籍データに存在しないカテゴリーIDを指定したときに例外のエラーメッセージを返すこと() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016-07-08",
+                                    "isPurchased": true,
+                                    "categoryId": 999999999
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "404",
+                    "error": "Not Found",
+                    "message": "categoryId：999999999 のデータがありません。",
+                    "path": "/books/2"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
 }
