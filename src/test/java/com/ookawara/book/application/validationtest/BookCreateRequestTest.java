@@ -94,7 +94,7 @@ class BookCreateRequestTest {
     }
 
     @Test
-    void nameとreleaseDateとcategoryIdが1より小さい数字のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
+    void nameとreleaseDateとcategoryIdが1より小さい数字のときバリーデーションエラーとなりエラーメッセージが設定したものになっている() {
         BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.now(), false, 0);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
