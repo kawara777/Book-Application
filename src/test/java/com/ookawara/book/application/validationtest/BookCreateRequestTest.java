@@ -94,13 +94,16 @@ class BookCreateRequestTest {
     }
 
     @Test
-    void nameとreleaseDateとcategoryIdが1より小さい数字のときバリーデーションエラーとなりエラーメッセージが設定したものになっている() {
-        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.now(), false, 0);
+    void nameとreleaseDateとcategoryIdがバリーデーションエラーの時各項目のエラーメッセージが設定したものになって全て返されること() {
+        BookCreateRequest bookRequest = new BookCreateRequest("", null, false, 0);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
-        assertThat(violations).hasSize(1);
+        assertThat(violations).hasSize(3);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
-                .containsExactlyInAnyOrder(tuple("categoryId", "1 以上の値にしてください"));
+                .containsExactlyInAnyOrder(
+                        tuple("name", "書籍名を入力してください"),
+                        tuple("releaseDate", "発売日を入力してください"),
+                        tuple("categoryId", "1 以上の値にしてください"));
     }
 
     @Test
