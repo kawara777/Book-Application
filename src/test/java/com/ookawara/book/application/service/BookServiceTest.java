@@ -186,4 +186,55 @@ class BookServiceTest {
                 .hasMessage("すでに登録されています。");
         verify(bookMapper).findCategory("漫画");
     }
+
+    @Test
+    public void 本のデータを正常に更新できること() {
+        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByBookId(1);
+        doReturn(Optional.of(new Category(3, "小説"))).when(bookMapper).findByCategoryId(3);
+        Book book = new Book(1, "ノーゲーム・ノーライフ 1", LocalDate.of(2012, 5, 30), false, 3);
+        doNothing().when(bookMapper).updateBook(book);
+        Book actual = bookService.updateBook(1, "ノーゲーム・ノーライフ 1", LocalDate.of(2012, 5, 30), false, 3);
+        assertThat(actual).isEqualTo(book);
+        verify(bookMapper).findByBookId(1);
+        verify(bookMapper).findByCategoryId(3);
+        verify(bookMapper).updateBook(book);
+    }
+
+    @Test
+    void 指定した本のIDに対して更新するレコードが既にあるとき上書きとして正常に更新できること() {
+        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByBookId(1);
+        doReturn(Optional.of(new Category(2, "ライトノベル"))).when(bookMapper).findByCategoryId(2);
+        Book book = new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        doNothing().when(bookMapper).updateBook(book);
+        Book actual = bookService.updateBook(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
+        assertThat(actual).isEqualTo(book);
+        verify(bookMapper).findByBookId(1);
+        verify(bookMapper).findByCategoryId(2);
+        verify(bookMapper).updateBook(book);
+    }
+
+    @Test
+    void 更新時に指定した本のIDがない時例外のエラーメッセージを返すこと() {
+        doReturn(Optional.empty()).when(bookMapper).findByBookId(999999999);
+        assertThatThrownBy(
+                () -> bookService.updateBook(999999999, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("book：999999999 のデータはありません。");
+        verify(bookMapper).findByBookId(999999999);
+    }
+
+    @Test
+    void 更新時に指定したカテゴリーIDに対するデータがないとき例外のエラーメッセージを返すこと() {
+        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByBookId(1);
+        doReturn(Optional.empty()).when(bookMapper).findByCategoryId(999999999);
+        assertThatThrownBy(
+                () -> bookService.updateBook(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 999999999))
+                .isInstanceOf(CategoryNotFoundException.class)
+                .hasMessage("categoryId：999999999 のデータがありません。");
+        verify(bookMapper).findByBookId(1);
+        verify(bookMapper).findByCategoryId(999999999);
+    }
 }
