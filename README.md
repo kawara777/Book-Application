@@ -11,7 +11,7 @@
 - CI（Git Actions、自動テストを実装）
 - AWSデプロイ（これから実施予定）
 ## アプリケーション概略図
-
+![book-application drawio (3)](https://github.com/kawara777/book-application/assets/138858245/38025fce-3645-4530-89b5-745a8644794b)
 # 機能
 以下の処理を実行できます。（categories に対してはこれから実装予定）
 - 全件検索
@@ -40,8 +40,25 @@
 ## API仕様書
 
 # ローカルでのアプリケーション起動方法
-- git、Java、Dockerをインストールする（OSによってインストール方法が異なります）
-- このリポジトリをgit cloneする
+1. git、Java、Dockerをインストールする（OSによってインストール方法が異なります）
+2. ターミナルを開く
+3. 下記コマンドでこのリポジトリをgit clone（コピー）する
 ```text
-git clone 
+git clone https://github.com/kawara777/book-application.git
+``` 
+4. クローンしたディレクトリに移動する
+5. 下記コマンdockerを起動
+```text
+docker compose up
+```
+もしくは
+```text
+docker compose up -d
+```
+6. 下記コマンドでSpring Bootを起動
+```text
+./gradlew bootRun
+```
+7. ブラウザやcurlなどでリクエストを送る
+※API仕様書参考
 # 自動テスト
