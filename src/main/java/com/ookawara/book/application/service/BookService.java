@@ -22,6 +22,7 @@ public class BookService {
         this.bookMapper = bookMapper;
     }
 
+    //    GET
     public List<Book> findBy(String category, String name, Boolean isPurchased) {
         if (category.isEmpty() && name.isEmpty() && isPurchased == null) {
             return bookMapper.findAll();
@@ -45,6 +46,7 @@ public class BookService {
                 () -> new CategoryNotFoundException("category：" + categoryId + " のデータはありません。"));
     }
 
+    //    POST
     public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
         if (bookMapper.findByCategoryId(categoryId).isPresent()) {
             Book book = new Book(name, releaseDate, isPurchased, categoryId);
@@ -69,6 +71,7 @@ public class BookService {
         }
     }
 
+    //    PATCH
     public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
         bookMapper.findByBookId(bookId).orElseThrow(
                 () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
@@ -79,6 +82,12 @@ public class BookService {
             bookMapper.updateBook(book);
             return book;
         }
+    }
 
+    //    DELETE
+    public void deleteBook(int bookId) {
+        bookMapper.findByBookId(bookId).orElseThrow(
+                () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
+        bookMapper.deleteBook(bookId);
     }
 }

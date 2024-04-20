@@ -32,6 +32,8 @@ class BookServiceTest {
     @Mock
     BookMapper bookMapper;
 
+//    GET
+
     @Test
     public void 全ての項目が未指定のとき全てのデータを取得() {
         List<Book> allBooks = List.of(
@@ -136,6 +138,8 @@ class BookServiceTest {
         verify(bookMapper).findByCategoryId(0);
     }
 
+//    POST
+
     @Test
     public void 本のデータを正常に登録できること() {
         doReturn(Optional.of(new Category(1, "漫画"))).when(bookMapper).findByCategoryId(1);
@@ -187,6 +191,8 @@ class BookServiceTest {
         verify(bookMapper).findCategory("漫画");
     }
 
+//    PATCH
+
     @Test
     public void 本のデータを正常に更新できること() {
         doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
@@ -236,5 +242,25 @@ class BookServiceTest {
                 .hasMessage("categoryId：999999999 のデータがありません。");
         verify(bookMapper).findByBookId(1);
         verify(bookMapper).findByCategoryId(999999999);
+    }
+
+    //    DELETE
+    @Test
+    void 指定した本のIDのデータを正常に削除できること() {
+        doReturn(Optional.of(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2)))
+                .when(bookMapper).findByBookId(1);
+        doNothing().when(bookMapper).deleteBook(1);
+        bookService.deleteBook(1);
+        verify(bookMapper).findByBookId(1);
+        verify(bookMapper).deleteBook(1);
+    }
+
+    @Test
+    void 指定した本のIDが存在しない時データが削除されないこと() {
+        doReturn(Optional.empty()).when(bookMapper).findByBookId(100);
+        assertThatThrownBy(() -> bookService.deleteBook(100))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("book：100 のデータはありません。");
+        verify(bookMapper).findByBookId(100);
     }
 }
