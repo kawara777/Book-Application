@@ -70,7 +70,6 @@ public class BookService {
     }
 
     public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
-//        # 49~59行目を以下のような形で記述できる
         bookMapper.findByBookId(bookId).orElseThrow(
                 () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
         if (categoryId != null && bookMapper.findByCategoryId(categoryId).isEmpty()) {
