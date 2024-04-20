@@ -2,6 +2,7 @@ package com.ookawara.book.application.mapper;
 
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -52,4 +53,8 @@ public interface BookMapper {
     //    PATCH
     @UpdateProvider(BookSqlProvider.class)
     void updateBook(Book book);
+
+    //    DELETE
+    @Delete("delete from books where book_id = #{bookid}")
+    void deleteBook(int bookId);
 }

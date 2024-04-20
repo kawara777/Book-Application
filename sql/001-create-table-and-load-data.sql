@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS movies;
 
 CREATE TABLE categories (
- category_id INTEGER unsigned AUTO_INCREMENT,
+ category_id int unsigned AUTO_INCREMENT,
  category VARCHAR(20) NOT NULL,
  PRIMARY KEY (category_id)
 );
@@ -11,7 +11,7 @@ INSERT INTO categories (category) VALUES ("ライトノベル");
 INSERT INTO categories (category) VALUES ("小説");
 
 CREATE TABLE books (
- book_id INTEGER unsigned AUTO_INCREMENT,
+ book_id int unsigned AUTO_INCREMENT,
  name VARCHAR(1000) NOT NULL,
  release_date DATE NOT NULL,
  is_purchased TINYINT(1) NOT NULL DEFAULT 0,

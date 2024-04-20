@@ -11,8 +11,9 @@ public class Book {
     private Integer categoryId;
     private String category;
 
-//    MyBatis がインスタンス生成するのに必要
-    public Book() {}
+    //    MyBatis がインスタンス生成するのに必要
+    public Book() {
+    }
 
     public Book(Integer bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId, String category) {
         this.bookId = bookId;
