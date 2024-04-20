@@ -402,4 +402,21 @@ class BookMapperTest {
         Book book = new Book(4, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1);
         bookMapper.updateBook(book);
     }
+
+    //    DELETE
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet("datasets/delete/delete-books.yml")
+    @Transactional
+    void IDで指定した本のデータが削除できること() {
+        bookMapper.deleteBook(2);
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet("datasets/books.yml")
+    @Transactional
+    void 存在しない本のIDを指定したときデータが削除されないこと() {
+        bookMapper.deleteBook(100);
+    }
 }
