@@ -1,0 +1,546 @@
+openapi: "3.1.0"
+info:
+  title: Books Management API
+  description: |-
+    書籍管理アプリのAPI仕様書です。
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: book
+    description: 書籍情報に対する操作
+  - name: category
+    description: カテゴリー情報に対する操作
+paths:
+  /books:
+    get:
+      tags:
+        - book
+      summary: 書籍情報の取得
+      description: クエリパラメータで入力された条件に合致する書籍情報を取得する。条件を入力しない場合は全ての書籍情報を取得する
+      parameters:
+        - name: name
+          in: query
+          description: 書籍名に入力した文字が含まれる書籍情報が検索される
+          required: false
+          schema:
+            type: string
+          example: 鬼滅の刃・1
+        - name: releaseDate
+          in: query
+          description: 発売日に入力した文字が含まれる書籍情報が検索される
+          required: false
+          schema:
+            type: localDate
+          example: 20160608
+        - name: isPurchased
+          in: query
+          description: 購入状況に入力した文字が含まれる書籍情報が検索される
+          required: false
+          schema:
+            type: boolean
+          example: false
+        - name: category
+          in: query
+          description: カテゴリーに入力した文字が含まれる書籍情報が検索される
+          required: false
+          schema:
+            type: string
+          example: 漫画
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    bookId:
+                      type: int
+                    name:
+                      type: string
+                    releaseDate:
+                      type: localDate
+                    isPurchased:
+                      type: boolean
+                    categoryId:
+                      type: int
+                    category:
+                      type: string
+                  example:
+                    bookId: 2
+                    name: 鬼滅の刃・1
+                    releaseDate: 2016/06/08
+                    isPurchased: false
+                    categoryId: 1
+                    category: 漫画
+    post:
+      tags:
+        - book
+      summary: 書籍情報の登録
+      description: 書籍情報を新たに登録する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: false
+                releaseDate:
+                  type: string
+                  nullable: false
+                isPurchased:
+                  type: boolean
+                  nullable: true
+                categoryId:
+                  type: int
+                  nullable: false
+              example:
+                name: 鬼滅の刃・1
+                releaseDate: 2016/06/08
+                isPurchased: false
+                categoryId: 1
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に登録されました。
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookBadRequest'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duplicate'
+  /book/{bookId}:
+    get:
+      tags:
+        - book
+      summary: 指定したIDの書籍情報を取得
+      description: 指定したIDの書籍情報を取得する
+      parameters:
+        - name: bookId
+          in: path
+          description: 取得したい書籍のID
+          required: true
+          schema:
+            type: int
+          example: 2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    bookId:
+                      type: int
+                    name:
+                      type: string
+                    releaseDate:
+                      type: localDate
+                    isPurchased:
+                      type: boolean
+                    categoryId:
+                      type: int
+                    category:
+                      type: string
+                  example:
+                    bookId: 2
+                    name: 鬼滅の刃・1
+                    releaseDate: 2016/06/08
+                    isPurchased: false
+                    categoryId: 1
+                    category: 漫画
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    patch:
+      tags:
+        - book
+      summary: 書籍情報の更新
+      description: 指定したIDの書籍情報を更新する
+      parameters:
+        - name: bookId
+          in: path
+          description: 更新したい書籍のID
+          required: true
+          schema:
+            type: int
+          example: 2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: true
+                releaseDate:
+                  type: string
+                  nullable: true
+                isPurchased:
+                  type: boolean
+                  nullable: true
+                categoryId:
+                  type: ibt
+                  nullable: true
+              example:
+                name: 鬼滅の刃 1
+                releaseDate: 2016/07/08
+                isPurchased: true
+                categoryId: 2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に更新されました。
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookBadRequest'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duplicate'
+    delete:
+      tags:
+        - book
+      summary: 書籍情報の削除
+      description: 指定したIDの書籍情報を削除する
+      parameters:
+        - name: bookId
+          in: path
+          description: 削除したい書籍のID
+          required: true
+          schema:
+            type: int
+          example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に削除されました。
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+  /categories:
+    get:
+      tags:
+        - category
+      summary: カテゴリー情報の取得
+      description: クエリパラメータで入力された条件に合致するカテゴリー情報を取得する。条件を入力しない場合は全てのカテゴリー情報を取得する
+      parameters:
+        - name: category
+          in: query
+          description: カテゴリー名に入力した文字が含まれるカテゴリー情報が検索される
+          required: false
+          schema:
+            type: string
+          example: 小説
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    categoryId:
+                      type: int
+                    category:
+                      type: string
+                  example:
+                    bookId: 1
+                    category: 小説
+    post:
+      tags:
+        - category
+      summary: カテゴリー情報の登録
+      description: カテゴリー情報を新たに登録する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  nullable: false
+                  example: 漫画
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に登録されました。
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryBadRequest'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duplicate'
+  /category/{categoryId}:
+    get:
+      tags:
+        - category
+      summary: 指定したIDのカテゴリー情報を取得
+      description: 指定したIDのカテゴリー情報を取得する
+      parameters:
+        - name: categoryId
+          in: path
+          description: 取得したいカテゴリーのID
+          required: true
+          schema:
+            type: int
+          example: 2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    categoryId:
+                      type: int
+                      example: 2
+                    category:
+                      type: string
+                      example: 漫画
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    patch:
+      tags:
+        - category
+      summary: カテゴリー情報の更新
+      description: 指定したIDのカテゴリー情報を更新する
+      parameters:
+        - name: categoryId
+          in: path
+          description: 更新したいカテゴリーのID
+          required: true
+          schema:
+            type: int
+          example: 2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  nullable: true
+                  example: マンガ
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に更新されました。
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryBadRequest'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duplicate'
+    delete:
+      tags:
+        - category
+      summary: カテゴリー情報の削除
+      description: 指定したIDのカテゴリー情報を削除する
+      parameters:
+        - name: categoryId
+          in: path
+          description: 削除したいカテゴリーのID
+          required: true
+          schema:
+            type: int
+          example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 正常に削除されました。
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+components:
+  schemas:
+    BookBadRequest:
+      description: 書籍情報の登録操作でリクエストボディに不備があるときのレスポンス
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: object
+          example:
+            name: 書籍名を入力してください
+            releaseDate: 発売日を入力してください
+            categoryI: カテゴリーIDを入力してください
+        path:
+          type: string
+          example: 指定したパス
+    CategoryBadRequest:
+      description: カテゴリー情報に対する操作でリクエストボディに不備があるときのレスポンス
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: object
+          example:
+            category: カテゴリー名を入力してください
+        path:
+          type: string
+          example: 指定したパス
+    NotFound:
+      description: 指定したリソースが存在しないときのレスポンス
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: bookId： 10 のデータはありません。
+        path:
+          type: string
+          example: 指定したパス
+    Duplicate:
+      description: 指定したリソースがすでに存在するときのレスポンス
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 409
+        error:
+          type: string
+          example: Conflict
+        message:
+          type: string
+          example: すでに登録されています。
+        path:
+          type: string
+          example: 指定したパス
