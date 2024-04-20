@@ -79,6 +79,11 @@ public class BookService {
             bookMapper.updateBook(book);
             return book;
         }
+    }
 
+    public void deleteBook(int bookId) {
+        bookMapper.findByBookId(bookId).orElseThrow(
+                () -> new BookNotFoundException("book：" + bookId + " のデータはありません。"));
+        bookMapper.deleteBook(bookId);
     }
 }
