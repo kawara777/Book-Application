@@ -390,7 +390,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 2
                                 }
@@ -432,7 +432,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 1
                                 }
@@ -460,7 +460,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 999999999
                                 }
