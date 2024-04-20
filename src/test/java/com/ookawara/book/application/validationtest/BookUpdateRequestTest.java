@@ -8,7 +8,6 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,18 +23,8 @@ class BookUpdateRequestTest {
     }
 
     @Test
-    void 発売日が未来の年月日のときバリーデーションエラーが発生すること() {
-        BookUpdateRequest bookRequest = new BookUpdateRequest("鬼滅の刃・1", LocalDate.of(9999, 12, 31), false, 1);
-        Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
-        assertThat(violations).hasSize(1);
-        assertThat(violations)
-                .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
-                .containsExactlyInAnyOrder(tuple("releaseDate", "現在もしくは過去の日付を入力してください"));
-    }
-
-    @Test
     void カテゴリーIDが1より小さい数字のときバリーデーションエラーが発生すること() {
-        BookUpdateRequest bookRequest = new BookUpdateRequest("鬼滅の刃・1", LocalDate.now(), false, 0);
+        BookUpdateRequest bookRequest = new BookUpdateRequest("鬼滅の刃・1", "2000/01/01", false, 0);
         Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
@@ -44,20 +33,8 @@ class BookUpdateRequestTest {
     }
 
     @Test
-    void 発売日とカテゴリーIDのバリデーションエラーが同時に発生すること() {
-        BookUpdateRequest bookRequest = new BookUpdateRequest("", LocalDate.of(9999, 12, 31), false, 0);
-        Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
-        assertThat(violations).hasSize(2);
-        assertThat(violations)
-                .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
-                .containsExactlyInAnyOrder(
-                        tuple("releaseDate", "現在もしくは過去の日付を入力してください"),
-                        tuple("categoryId", "1 以上の値にしてください"));
-    }
-
-    @Test
     void 全てのフィールドに正常値があるときバリデーションエラーとならないこと() {
-        BookUpdateRequest bookRequest = new BookUpdateRequest(null, LocalDate.now(), null, 1);
+        BookUpdateRequest bookRequest = new BookUpdateRequest(null, "2000/01/01", null, 1);
         Set<ConstraintViolation<BookUpdateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).isEmpty();
     }

@@ -390,7 +390,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 2
                                 }
@@ -432,7 +432,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 1
                                 }
@@ -460,7 +460,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1",
-                                    "releaseDate": "2016-07-08",
+                                    "releaseDate": "2016/07/08",
                                     "isPurchased": true,
                                     "categoryId": 999999999
                                 }
@@ -473,6 +473,31 @@ class BookRestApiIntegrationTest {
                     "status": "404",
                     "error": "Not Found",
                     "message": "categoryId：999999999 のデータがありません。",
+                    "path": "/books/2"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 更新する発売日にフォーマットが違う文字列を指定したとき例外が発生すること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "releaseDate": "2024-02-29"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "400",
+                    "error": "Bad Request",
+                    "message": "yyyy/MM/dd の形式（例：2000/01/01）で存在する日付を入力してください。",
                     "path": "/books/2"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
