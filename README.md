@@ -93,11 +93,11 @@ docker compose up -d
 - 結合テスト
   - BookController
 
-<img width="568" alt="スクリーンショット 2024-04-21 16 20 01" src="https://github.com/kawara777/book-application/assets/138858245/73102f26-6162-46a9-96c8-6cbb4f21b67d">
-
 # 今度の展望
 
 - 追加機能の実装 ([issues](https://github.com/kawara777/book-application/issues))
 - Spring Securityの導入
 - CDの導入
 - フロントエンドの導入
+
+<table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>
