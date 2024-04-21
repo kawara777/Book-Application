@@ -38,7 +38,7 @@
 | ID                 | category_id        | int         | NO       | PRIMARY KEY       | 
 | カテゴリー         | category           | VARCHAR(20) | NO       |        | 
 ## API仕様書
-
+[swaggerによるAPI仕様書](https://kawara777.github.io/book-application/dist/index.html)
 # ローカルでのアプリケーション起動方法
 1. git、Java、Dockerをインストールする（OSによってインストール方法が異なります）
 2. ターミナルを開く
