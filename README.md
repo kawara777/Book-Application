@@ -30,7 +30,7 @@
 | ID                 | book_id            | int           | NO       | PRIMARY KEY<br>AUTO INCREMENT                    | 
 | 書籍名             | name               | VARCHAR(1000) | NO       |                                                  | 
 | 発売日             | release_date       | DATE          | NO       | yyyy-MM-dd 形式                                  | 
-| 購入状況           | is_Purchased       | TINYINT(1)    | NO       |                                                  | 
+| 購入状況           | is_Purchased       | TINYINT(1)    | NO       | DEFAULT 0                                                   | 
 | カテゴリーID       | category_id        | int           | NO       | FOREIGN KEY<br>DELETE SET NULL<br>UPDATE CASCADE | 
 ### categories
 | カラム名（論理名） | カラム名（物理名） | 型（桁）    | Nullable | その他 | 
@@ -62,3 +62,11 @@ docker compose up -d
 7. ブラウザやcurlなどでリクエストを送る
 ※API仕様書参考
 # 自動テスト
+以下のテストコードを実施
+- DBテスト
+  - BookMapper
+- 単体テスト
+  - BookService
+- 結合テスト
+  - BookController
+
