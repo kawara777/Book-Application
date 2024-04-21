@@ -93,9 +93,7 @@ docker compose up -d
 - 結合テスト
   - BookController
 
-|  | Tests | Passed ✅ | Skipped ⏭️ | Failed ❌ |
-| :---: | :---: | :---: | :---: | :---: |
-| JUnit Test Report | 97 ran | 97 passed | 0 skipped | 0 failed |
+
 
 # 今度の展望
 
