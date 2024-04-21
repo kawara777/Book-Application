@@ -31,8 +31,8 @@ paths:
           description: 発売日に入力した文字が含まれる書籍情報が検索される
           required: false
           schema:
-            type: localDate
-          example: 20160608
+            type: string
+          example: 2016-06-08
         - name: isPurchased
           in: query
           description: 購入状況に入力した文字が含まれる書籍情報が検索される
@@ -62,7 +62,7 @@ paths:
                     name:
                       type: string
                     releaseDate:
-                      type: localDate
+                      type: string
                     isPurchased:
                       type: boolean
                     categoryId:
@@ -157,7 +157,7 @@ paths:
                     name:
                       type: string
                     releaseDate:
-                      type: localDate
+                      type: string
                     isPurchased:
                       type: boolean
                     categoryId:
