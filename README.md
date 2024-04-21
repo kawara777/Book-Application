@@ -93,9 +93,7 @@ docker compose up -d
 - 結合テスト
   - BookController
 
-|  | Tests | Passed ✅ | Skipped ⏭️ | Failed ❌ |
-| :---: | :---: | :---: | :---: | :---: |
-| JUnit Test Report | 97 ran | 97 passed | 0 skipped | 0 failed |
+<img width="576" alt="スクリーンショット 2024-04-21 17 49 28" src="https://github.com/kawara777/book-application/assets/138858245/0dd1fcb1-a116-43f6-9e16-524195fc9502">
 
 # 今度の展望
 
@@ -103,6 +101,3 @@ docker compose up -d
 - Spring Securityの導入
 - CDの導入
 - フロントエンドの導入
-
-<img width="576" alt="スクリーンショット 2024-04-21 17 49 28" src="https://github.com/kawara777/book-application/assets/138858245/0dd1fcb1-a116-43f6-9e16-524195fc9502">
-
