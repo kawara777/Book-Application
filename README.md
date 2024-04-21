@@ -34,6 +34,7 @@
 ## データベース定義
 
 **books**
+
 | カラム名（論理名） | カラム名（物理名） | 型（桁）      | Nullable | その他                                           | 
 | :----------------: | :----------------: | :-----------: | :------: | :----------------------------------------------: | 
 | ID                 | book_id            | int           | NO       | PRIMARY KEY<br>AUTO INCREMENT                    | 
@@ -43,6 +44,7 @@
 | カテゴリーID       | category_id        | int           | NO       | FOREIGN KEY<br>DELETE SET NULL<br>UPDATE CASCADE | 
 
 **categories**
+
 | カラム名（論理名） | カラム名（物理名） | 型（桁）    | Nullable | その他 | 
 | :----------------: | :----------------: | :---------: | :------: | :----: | 
 | ID                 | category_id        | int         | NO       | PRIMARY KEY       | 
