@@ -17,6 +17,8 @@
 
 ## アプリケーション概略図
 
+![book-application drawio (3)](https://github.com/kawara777/book-application/assets/138858245/38025fce-3645-4530-89b5-745a8644794b)
+
 # 機能
 
 以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
@@ -30,6 +32,8 @@
 # 設計書
 
 ## E-R図
+
+![book-application drawio (1)](https://github.com/kawara777/book-application/assets/138858245/746a8845-4e1f-4958-a43c-6e88baaa6226)
 
 ## データベース定義
 
@@ -88,4 +92,8 @@ docker compose up -d
   - BookUpdateRequest
 - 結合テスト
   - BookController
-[<table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>](https://github.com/kawara777/book-application/actions/runs/8770227122/attempts/1#summary-24066574174)
+
+<table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>
+
+# 今度の展望
+- 追加機能の実装
