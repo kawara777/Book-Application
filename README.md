@@ -11,7 +11,7 @@
 - CI（Git Actions、自動テストを実装）
 - AWSデプロイ（これから実施予定）
 ## アプリケーション概略図
-![book-application drawio (3)](https://github.com/kawara777/book-application/assets/138858245/38025fce-3645-4530-89b5-745a8644794b)
+
 # 機能
 以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
 - 全件検索
@@ -22,7 +22,7 @@
 - 削除
 # 設計書
 ## E-R図
-![book-application drawio (1)](https://github.com/kawara777/book-application/assets/138858245/746a8845-4e1f-4958-a43c-6e88baaa6226)
+
 ## データベース定義
 ### books
 | カラム名（論理名） | カラム名（物理名） | 型（桁）      | Nullable | その他                                           | 
