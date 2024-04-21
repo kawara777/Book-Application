@@ -67,6 +67,8 @@ docker compose up -d
   - BookMapper
 - 単体テスト
   - BookService
+  - BookCreateRequest
+  - BookUpdateRequest
 - 結合テスト
   - BookController
 
