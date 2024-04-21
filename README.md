@@ -96,6 +96,7 @@ docker compose up -d
 <table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>
 
 # 今度の展望
+
 - 追加機能の実装 ([issues](https://github.com/kawara777/book-application/issues))
 - Spring Securityの導入
 - CDの導入
