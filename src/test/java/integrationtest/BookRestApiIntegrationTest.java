@@ -503,4 +503,37 @@ class BookRestApiIntegrationTest {
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
     }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet("datasets/delete/delete-books.yml")
+    @Transactional
+    void 存在する本のIDを指定したときに正常に本のデータが削除されること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/book/2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に削除されました。"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void 削除時に存在しない本のIDを指定したときステータスコードが404となり例外メッセージが返されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/book/0"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "404",
+                    "error": "Not Found",
+                    "message": "book：0 のデータはありません。",
+                    "path": "/book/0"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
 }
