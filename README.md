@@ -97,6 +97,6 @@ docker compose up -d
 
 # 今度の展望
 - 追加機能の実装 ([issues](https://github.com/kawara777/book-application/issues))
-- Spring Security　の導入
-- CD　の導入
+- Spring Securityの導入
+- CDの導入
 - フロントエンドの導入
