@@ -101,5 +101,3 @@ docker compose up -d
 - Spring Securityの導入
 - CDの導入
 - フロントエンドの導入
-
-![book-application drawio (4)](https://github.com/kawara777/book-application/assets/138858245/73102f26-6162-46a9-96c8-6cbb4f21b67d)
