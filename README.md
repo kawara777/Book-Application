@@ -13,7 +13,7 @@
 ## アプリケーション概略図
 ![book-application drawio (3)](https://github.com/kawara777/book-application/assets/138858245/38025fce-3645-4530-89b5-745a8644794b)
 # 機能
-以下の処理を実行できます。（categories に対してはこれから実装予定）
+以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
 - 全件検索
 - ID検索
 - 項目検索（単一、複数 可）
