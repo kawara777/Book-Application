@@ -88,3 +88,4 @@ docker compose up -d
   - BookUpdateRequest
 - 結合テスト
   - BookController
+[<table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>](https://github.com/kawara777/book-application/actions/runs/8770227122/attempts/1#summary-24066574174)
