@@ -93,7 +93,7 @@ docker compose up -d
 - 結合テスト
   - BookController
 
-
+<img width="568" alt="スクリーンショット 2024-04-21 16 20 01" src="https://github.com/kawara777/book-application/assets/138858245/73102f26-6162-46a9-96c8-6cbb4f21b67d">
 
 # 今度の展望
 
