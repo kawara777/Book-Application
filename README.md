@@ -71,4 +71,3 @@ docker compose up -d
   - BookUpdateRequest
 - 結合テスト
   - BookController
-
