@@ -10,6 +10,7 @@ import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,6 +70,13 @@ public class BookController {
     public ResponseEntity<BookResponse> postBook(@PathVariable int bookId, @RequestBody @Validated BookUpdateRequest bookRequest) {
         bookService.updateBook(bookId, bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
         BookResponse body = new BookResponse("正常に更新されました。");
+        return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping("book/{bookId}")
+    public ResponseEntity<BookResponse> deleteBook(@PathVariable int bookId) {
+        bookService.deleteBook(bookId);
+        BookResponse body = new BookResponse("正常に削除されました。");
         return ResponseEntity.ok(body);
     }
 }
