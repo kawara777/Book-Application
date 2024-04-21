@@ -93,8 +93,6 @@ docker compose up -d
 - 結合テスト
   - BookController
 
-<table><tr><th><th>Tests</th><th>Passed ✅</th><th>Skipped ⏭️</th><th>Failed ❌</th></tr><tr><td>JUnit Test Report</td><td>97 ran</td><td>97 passed</td><td>0 skipped</td><td>0 failed</td></tr></table>
-
 |  | Tests | Passed ✅ | Skipped ⏭️ | Failed ❌ |
 | :---: | :---: | :---: | :---: | :---: |
 | JUnit Test Report | 97 ran | 97 passed | 0 skipped | 0 failed |
