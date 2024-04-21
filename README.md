@@ -12,7 +12,7 @@
 - MySQL
 - Docker
 - 自動テスト
-- CI（Git Actions、自動テストを実装）
+- CI（GitHub Actions、自動テストを実装）
 - AWSデプロイ（これから実施予定）
 
 ## アプリケーション概略図
@@ -21,7 +21,7 @@
 
 # 機能
 
-以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
+書籍に情報に対して以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
 - 全件検索
 - ID検索
 - 項目検索（単一、複数 可）
@@ -44,8 +44,8 @@
 | ID | book_id | int | NO | PRIMARY KEY<br>AUTO INCREMENT | 
 | 書籍名 | name | VARCHAR(1000) | NO |
 | 発売日  | release_date | DATE | NO | yyyy-MM-dd 形式 | 
-| 購入状況 | is_Purchased | TINYINT(1) | NO | DEFAULT 0 | 
-| カテゴリーID | category_id | int | NO | FOREIGN KEY<br>DELETE SET NULL<br>UPDATE CASCADE | 
+| 購入状況 | is_purchased | TINYINT(1) | NO | DEFAULT 0 | 
+| カテゴリーID | category_id | int | NO | FOREIGN KEY<br>DELETE CASCADE<br>UPDATE CASCADE | 
 
 **categories**
 
