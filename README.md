@@ -25,7 +25,6 @@
 
 ## データベース定義
 ### books
-
 | カラム名（論理名） | カラム名（物理名） | 型（桁）      | Nullable | その他                                           | 
 | :----------------: | :----------------: | :-----------: | :------: | :----------------------------------------------: | 
 | ID                 | book_id            | int           | NO       | PRIMARY KEY<br>AUTO INCREMENT                    | 
@@ -33,14 +32,11 @@
 | 発売日             | release_date       | DATE          | NO       | yyyy-MM-dd 形式                                  | 
 | 購入状況           | is_Purchased       | TINYINT(1)    | NO       | DEFAULT 0                                                   | 
 | カテゴリーID       | category_id        | int           | NO       | FOREIGN KEY<br>DELETE SET NULL<br>UPDATE CASCADE | 
-
 ### categories
-
 | カラム名（論理名） | カラム名（物理名） | 型（桁）    | Nullable | その他 | 
 | :----------------: | :----------------: | :---------: | :------: | :----: | 
 | ID                 | category_id        | int         | NO       | PRIMARY KEY       | 
 | カテゴリー         | category           | VARCHAR(20) | NO       |        | 
-
 ## API仕様書
 [swaggerによるAPI仕様書](https://kawara777.github.io/book-application/dist/index.html)
 # ローカルでのアプリケーション起動方法
