@@ -63,8 +63,7 @@ docker compose up -d
 ```text
 ./gradlew bootRun
 ```
-7. ブラウザやcurlなどでリクエストを送る
-※API仕様書参考
+7. ブラウザやcurlなどでリクエストを送る（API仕様書参考）
 # 自動テスト
 以下のテストコードを実施
 - DBテスト
@@ -75,7 +74,6 @@ docker compose up -d
   - BookUpdateRequest
 - 結合テスト
   - BookController
-
 
 | TH 左寄せ | TH 中央寄せ | TH 右寄せ |
 | :--- | :---: | ---: |
