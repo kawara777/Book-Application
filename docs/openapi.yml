@@ -80,7 +80,7 @@ paths:
       tags:
         - book
       summary: 書籍情報の登録
-      description: 書籍情報を新たに登録する
+      description: 書籍情報を新たに登録する。購入状況が未指定でも実行可能
       requestBody:
         required: true
         content:
@@ -181,7 +181,7 @@ paths:
       tags:
         - book
       summary: 書籍情報の更新
-      description: 指定したIDの書籍情報を更新する
+      description: 指定したIDの書籍情報を更新する。指定項目１〜３つのみでも実行可能
       parameters:
         - name: bookId
           in: path
