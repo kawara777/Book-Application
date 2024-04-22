@@ -6,11 +6,17 @@ on:
       - 'main'
       - 'feature/**'
       - 'revise/**'
+    paths:
+      - 'src/**'
+      - '.github/**'
   pull_request:
     branches:
       - 'main'
       - 'feature/**'
       - 'revise/**'
+    paths:
+      - 'src/**'
+      - '.github/**'
 
 jobs:
   build:
