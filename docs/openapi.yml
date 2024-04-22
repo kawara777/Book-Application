@@ -72,7 +72,7 @@ paths:
                   example:
                     bookId: 2
                     name: 鬼滅の刃・1
-                    releaseDate: 2016/06/08
+                    releaseDate: 2016-06-08
                     isPurchased: false
                     categoryId: 1
                     category: 漫画
@@ -167,7 +167,7 @@ paths:
                   example:
                     bookId: 2
                     name: 鬼滅の刃・1
-                    releaseDate: 2016/06/08
+                    releaseDate: 2016-06-08
                     isPurchased: false
                     categoryId: 1
                     category: 漫画
