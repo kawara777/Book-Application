@@ -47,11 +47,11 @@ jobs:
         if: always()
         with:
           name: test-coverage-report
-          path: build/reports/tests/test
+          path: build/reports/tests/test/index.html
 
       - name: Download coverage reports
         uses: actions/download-artifact@v4
         if: always()
         with:
           name: test-coverage-report
-          path: build/reports/tests/test
+          path: ダウンロード/
