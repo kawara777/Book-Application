@@ -47,4 +47,4 @@ jobs:
         if: always()
         with:
           name: coverage-test-report
-          path: reports/tests/coverage
+          path: 最終課題/reports/tests/coverage
