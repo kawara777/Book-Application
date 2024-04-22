@@ -55,7 +55,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
             }
         }.toString();
     }
-    
+
     public String updateBook(Book book) {
         return new SQL() {
             {
@@ -80,4 +80,5 @@ public class BookSqlProvider implements ProviderMethodResolver {
             }
         }.toString();
     }
+
 }
