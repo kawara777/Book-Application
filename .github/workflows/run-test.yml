@@ -47,4 +47,4 @@ jobs:
         if: always()
         with:
           name: coverage-test-report
-          path: src/test/java
+          path: build/reports/tests/test
