@@ -42,9 +42,16 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           job_name: 'Test Report'
 
-      - name: test with code coverage
+      - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: coverage-test-report
+          name: test-coverage-report
+          path: build/reports/tests/test
+
+      - name: Download coverage reports
+        uses: actions/download-artifact@v4
+        if: always()
+        with:
+          name: test-coverage-report
           path: build/reports/tests/test
