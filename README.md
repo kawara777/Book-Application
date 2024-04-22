@@ -45,7 +45,7 @@
 | 書籍名 | name | VARCHAR(1000) | NO |
 | 発売日  | release_date | DATE | NO | yyyy-MM-dd 形式 | 
 | 購入状況 | is_purchased | TINYINT(1) | NO | DEFAULT 0 | 
-| カテゴリーID | category_id | int | NO | FOREIGN KEY<br>DELETE CASCADE<br>UPDATE CASCADE | 
+| カテゴリーID | category_id | int | NO | FOREIGN KEY<br>DELETE NO ACTION<br>UPDATE CASCADE | 
 
 **categories**
 
