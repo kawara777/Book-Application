@@ -72,7 +72,7 @@ paths:
                   example:
                     bookId: 2
                     name: 鬼滅の刃・1
-                    releaseDate: 2016-06-08
+                    releaseDate: 2016/06/08
                     isPurchased: false
                     categoryId: 1
                     category: 漫画
@@ -128,7 +128,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Duplicate'
-  /book/{bookId}:
+  /books/{bookId}:
     get:
       tags:
         - book
@@ -148,29 +148,27 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    bookId:
-                      type: int
-                    name:
-                      type: string
-                    releaseDate:
-                      type: string
-                    isPurchased:
-                      type: boolean
-                    categoryId:
-                      type: int
-                    category:
-                      type: string
-                  example:
-                    bookId: 2
-                    name: 鬼滅の刃・1
-                    releaseDate: 2016-06-08
-                    isPurchased: false
-                    categoryId: 1
-                    category: 漫画
+                type: object
+                properties:
+                  bookId:
+                    type: int
+                  name:
+                    type: string
+                  releaseDate:
+                    type: string
+                  isPurchased:
+                    type: boolean
+                  categoryId:
+                    type: int
+                  category:
+                    type: string
+                example:
+                  bookId: 2
+                  name: 鬼滅の刃・1
+                  releaseDate: 2016-06-08
+                  isPurchased: false
+                  categoryId: 1
+                  category: 漫画
         "404":
           description: Not Found
           content:
@@ -343,7 +341,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Duplicate'
-  /category/{categoryId}:
+  /categories/{categoryId}:
     get:
       tags:
         - category
@@ -363,16 +361,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    categoryId:
-                      type: int
-                      example: 2
-                    category:
-                      type: string
-                      example: 漫画
+                type: object
+                properties:
+                  categoryId:
+                    type: int
+                    example: 2
+                  category:
+                    type: string
+                    example: 漫画
         "404":
           description: Not Found
           content:
