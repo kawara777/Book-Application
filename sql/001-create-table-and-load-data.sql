@@ -17,7 +17,7 @@ CREATE TABLE books (
  is_purchased TINYINT(1) NOT NULL DEFAULT 0,
  category_id int unsigned,
  PRIMARY KEY (book_id),
- CONSTRAINT fk_books_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id) ON DELETE SET NULL ON UPDATE CASCADE
+ CONSTRAINT fk_books_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 INSERT INTO books (name, reLease_date, is_purchased, category_id) VALUES ("ノーゲーム・ノーライフ・1", "2012/04/30", 1, 2);

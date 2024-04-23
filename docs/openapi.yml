@@ -458,6 +458,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referenced'
 components:
   schemas:
     BookBadRequest:
@@ -537,6 +543,25 @@ components:
         message:
           type: string
           example: すでに登録されています。
+        path:
+          type: string
+          example: 指定したパス
+    Referenced:
+      description: 指定したリソースが別のデータベースで参照されているときのレスポンス
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 422
+        error:
+          type: string
+          example: Unprocessable Entity
+        message:
+          type: string
+          example: 他のデータベースで参照されています。
         path:
           type: string
           example: 指定したパス
