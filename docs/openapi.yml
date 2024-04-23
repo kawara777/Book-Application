@@ -463,7 +463,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Referenced'
+                $ref: '#/components/schemas/ReferencedCategory'
 components:
   schemas:
     BookBadRequest:
@@ -546,8 +546,8 @@ components:
         path:
           type: string
           example: 指定したパス
-    Referenced:
-      description: 指定したリソースが別のデータベースで参照されているときのレスポンス
+    ReferencedCategory:
+      description: 書籍情報に削除対象のカテゴリーが存在するときのレスポンス
       type: object
       properties:
         timestamp:
