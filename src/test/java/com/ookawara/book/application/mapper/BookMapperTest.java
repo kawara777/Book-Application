@@ -64,22 +64,8 @@ class BookMapperTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
-    void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
-        List<Book> books = bookMapper.findBy("ノ", "", null);
-        assertThat(books)
-                .hasSize(1)
-                .containsOnly(new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
-    }
-
-    @Test
-    @Sql(
-            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
-                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Transactional
     void 指定した文字列を含む書籍名に該当する全ての本のデータを取得() {
-        List<Book> books = bookMapper.findBy("", "の", null);
+        List<Book> books = bookMapper.findBy("の", "", null, null);
         assertThat(books)
                 .hasSize(2)
                 .containsOnly(
@@ -94,8 +80,23 @@ class BookMapperTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
+    void 指定した文字列を含む発売日に該当する全ての本のデータを取得() {
+        List<Book> books = bookMapper.findBy("", "2016-06", null, null);
+        assertThat(books)
+                .hasSize(1)
+                .containsOnly(
+                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"));
+    }
+
+    @Test
+    @Sql(
+            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
+                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
     void 購入済みの全ての本のデータを取得() {
-        List<Book> books = bookMapper.findBy("", "", true);
+        List<Book> books = bookMapper.findBy("", "", true, null);
         assertThat(books)
                 .hasSize(2)
                 .containsOnly(
@@ -111,7 +112,7 @@ class BookMapperTest {
     )
     @Transactional
     void 未購入の全ての本のデータを取得() {
-        List<Book> books = bookMapper.findBy("", "", false);
+        List<Book> books = bookMapper.findBy("", "", false, null);
         assertThat(books)
                 .hasSize(1)
                 .containsOnly(new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"));
@@ -124,8 +125,23 @@ class BookMapperTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
+    void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
+        List<Book> books = bookMapper.findBy("", "", null, "小");
+        assertThat(books)
+                .hasSize(1)
+                .containsOnly(
+                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
+    }
+
+    @Test
+    @Sql(
+            scripts = {"classpath:/sqlannotation/delete-categories.sql", "classpath:/sqlannotation/insert-categories.sql",
+                    "classpath:/sqlannotation/delete-books.sql", "classpath:/sqlannotation/insert-books.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
     void 全てにnullを指定したときsql文の条件により全ての本のデータを返すこと() {
-        List<Book> books = bookMapper.findBy(null, null, null);
+        List<Book> books = bookMapper.findBy(null, null, null, null);
         assertThat(books)
                 .hasSize(3)
                 .containsOnly(
@@ -137,8 +153,8 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void カテゴリーに空文字を書籍名と購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
-        List<Book> books = bookMapper.findBy("", null, null);
+    void 書籍名に空文字をその他の項目ににnullを指定したとき全ての本のデータを返すこと() {
+        List<Book> books = bookMapper.findBy("", null, null, null);
         assertThat(books)
                 .hasSize(3)
                 .containsOnly(
@@ -150,8 +166,8 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名に空文字をカテゴリーと購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
-        List<Book> books = bookMapper.findBy(null, "", null);
+    void 発売日に空文字をその他の項目にnullを指定したときに全ての本のデータを返すこと() {
+        List<Book> books = bookMapper.findBy(null, "", null, null);
         assertThat(books)
                 .hasSize(3)
                 .containsOnly(
@@ -163,8 +179,8 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名とカテゴリーに空文字を購入状況にnullを指定したときsql文の条件により全ての本のデータを返すこと() {
-        List<Book> books = bookMapper.findBy("", "", null);
+    void 発売日に半角スペースのみをその他の項目にnullを指定したときに全ての本のデータを返すこと() {
+        List<Book> books = bookMapper.findBy("", " ", null, null);
         assertThat(books)
                 .hasSize(3)
                 .containsOnly(
@@ -176,16 +192,21 @@ class BookMapperTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void カテゴリーに存在しない文字列を指定したとき空のデータを返すこと() {
-        List<Book> books = bookMapper.findBy(" ", "", null);
-        assertThat(books).isEmpty();
+    void カテゴリーに空文字をその他の項目にnullを指定したときに全ての本のデータを返すこと() {
+        List<Book> books = bookMapper.findBy(null, null, null, "");
+        assertThat(books)
+                .hasSize(3)
+                .containsOnly(
+                        new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
+                        new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
+                        new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
     }
 
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void 書籍名に存在しない文字列を指定したとき空のデータを返すこと() {
-        List<Book> books = bookMapper.findBy("", " ", null);
+    void 存在しない文字列を指定したとき空のデータを返すこと() {
+        List<Book> books = bookMapper.findBy("あ", "9999-99-99", null, "1");
         assertThat(books).isEmpty();
     }
 

@@ -8,22 +8,26 @@ import org.apache.ibatis.jdbc.SQL;
 import java.time.LocalDate;
 
 public class BookSqlProvider implements ProviderMethodResolver {
-    public String findBy(@Param("category") String category,
-                         @Param("name") String name,
-                         @Param("isPurchased") Boolean isPurchased) {
+    public String findBy(@Param("name") String name,
+                         @Param("releaseDate") String releaseDate,
+                         @Param("isPurchased") Boolean isPurchased,
+                         @Param("category") String category) {
         return new SQL() {
             {
                 SELECT("*");
                 FROM("books");
                 JOIN("categories on books.category_id = categories.category_id");
-                if (category != null && !category.isEmpty()) {
-                    WHERE("category like concat('%',#{category},'%')");
-                }
                 if (name != null && !name.isEmpty()) {
                     WHERE("name like concat('%',#{name},'%')");
                 }
+                if (releaseDate != null && !releaseDate.isBlank()) {
+                    WHERE("release_date like concat('%',#{releaseDate},'%')");
+                }
                 if (isPurchased != null) {
                     WHERE("is_purchased = #{isPurchased}");
+                }
+                if (category != null && !category.isEmpty()) {
+                    WHERE("category like concat('%',#{category},'%')");
                 }
             }
         }.toString();
@@ -55,7 +59,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
             }
         }.toString();
     }
-    
+
     public String updateBook(Book book) {
         return new SQL() {
             {
