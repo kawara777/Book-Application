@@ -28,7 +28,7 @@ paths:
           example: 鬼滅の刃・1
         - name: releaseDate
           in: query
-          description: 発売日に入力した年、年月、年月日が含まれる書籍情報が検索される。YYYY-MM-DD形式
+          description: 発売日に入力した年、年月、年月日が含まれる書籍情報が検索される
           required: false
           schema:
             type: string
@@ -76,11 +76,17 @@ paths:
                     isPurchased: false
                     categoryId: 1
                     category: 漫画
+        "400":
+          description: Bad Request (Format Check)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookBadRequest'
     post:
       tags:
         - book
       summary: 書籍情報の登録
-      description: 書籍情報を新たに登録する。購入状況が未指定でも実行可能。
+      description: 書籍情報を新たに登録する。購入状況が未指定でも実行可能
       requestBody:
         required: true
         content:
@@ -115,7 +121,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に登録されました。
+                    example: 正常に登録されました
         "400":
           description: Bad Request
           content:
@@ -128,6 +134,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Duplicate'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
   /books/{bookId}:
     get:
       tags:
@@ -222,7 +234,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に更新されました。
+                    example: 正常に更新されました
         "400":
           description: Bad Request
           content:
@@ -264,7 +276,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に削除されました。
+                    example: 正常に削除されました
         "404":
           description: Not Found
           content:
@@ -328,7 +340,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に登録されました。
+                    example: 正常に登録されました
         "400":
           description: Bad Request
           content:
@@ -409,7 +421,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に更新されました。
+                    example: 正常に更新されました
         "400":
           description: Bad Request
           content:
@@ -451,7 +463,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 正常に削除されました。
+                    example: 正常に削除されました
         "404":
           description: Not Found
           content:
@@ -483,7 +495,7 @@ components:
           type: object
           example:
             name: 書籍名を入力してください
-            releaseDate: 発売日を入力してください
+            releaseDate: YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください
             categoryI: カテゴリーIDを入力してください
         path:
           type: string
@@ -523,7 +535,7 @@ components:
           example: Not Found
         message:
           type: string
-          example: bookId： 10 のデータはありません。
+          example: bookId(categoryId)： 10 のデータはありません
         path:
           type: string
           example: 指定したパス
@@ -542,7 +554,7 @@ components:
           example: Conflict
         message:
           type: string
-          example: すでに登録されています。
+          example: すでに登録されています
         path:
           type: string
           example: 指定したパス
@@ -561,7 +573,7 @@ components:
           example: Unprocessable Entity
         message:
           type: string
-          example: 他のデータで参照されています。
+          example: 他のデータで参照されています
         path:
           type: string
           example: 指定したパス
