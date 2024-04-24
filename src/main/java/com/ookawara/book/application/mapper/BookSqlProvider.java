@@ -6,6 +6,7 @@ import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class BookSqlProvider implements ProviderMethodResolver {
     public String findBy(@Param("name") String name,
@@ -20,7 +21,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 if (name != null && !name.isEmpty()) {
                     WHERE("name like concat('%',#{name},'%')");
                 }
-                if (releaseDate != null && !releaseDate.isBlank()) {
+                if (Objects.nonNull(releaseDate) && !releaseDate.isBlank()) {
                     WHERE("release_date like concat('%',#{releaseDate},'%')");
                 }
                 if (isPurchased != null) {
