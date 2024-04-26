@@ -31,8 +31,11 @@ public class DateTimeFormat {
         if (format != null && !format.isBlank()) {
             if (format.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
                 try {
-                    LocalDate localDateFormat = LocalDate.parse(format, DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT));
-                    return localDateFormat.format(DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+                    LocalDate localDateFormat = dateTimeFormatter
+                            .withResolverStyle(ResolverStyle.STRICT)
+                            .parse(format, LocalDate::from);
+                    return localDateFormat.format(dateTimeFormatter);
                 } catch (DateTimeParseException e) {
                     throw new DateFormatException("存在する日付を入力してください。");
                 }
