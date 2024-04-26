@@ -23,7 +23,7 @@
 
 書籍情報に対して以下の処理を実行できます。（カテゴリーに対してはこれから実装予定）
 
-[API仕様書](https://kawara777.github.io/book-application/dist/index.html)参照
+[API仕様書](https://kawara777.github.io/book-application/docs/dist/index.html)参照
 
 # 設計書
 
@@ -52,7 +52,7 @@
 
 ## API仕様書
 
-[swaggerによるAPI仕様書](https://kawara777.github.io/book-application/dist/index.html)
+[swaggerによるAPI仕様書](https://kawara777.github.io/book-application/docs/dist/index.html)
 
 # ローカルでのアプリケーション起動方法
 
