@@ -42,20 +42,9 @@ class BookServiceTest {
                 new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
 
         doReturn(allBooks).when(bookMapper).findAll();
-        List<Book> actual = bookService.findBy("", "", null);
+        List<Book> actual = bookService.findBy("", "", null, "");
         assertThat(actual).isEqualTo(allBooks);
         verify(bookMapper).findAll();
-    }
-
-    @Test
-    public void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
-        List<Book> allBooks = List.of(
-                new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
-
-        doReturn(allBooks).when(bookMapper).findBy("ラ", "", null);
-        List<Book> actual = bookService.findBy("ラ", "", null);
-        assertThat(actual).isEqualTo(allBooks);
-        verify(bookMapper).findBy("ラ", "", null);
     }
 
     @Test
@@ -64,10 +53,21 @@ class BookServiceTest {
                 new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"),
                 new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
 
-        doReturn(allBooks).when(bookMapper).findBy("", "の", null);
-        List<Book> actual = bookService.findBy("", "の", null);
+        doReturn(allBooks).when(bookMapper).findBy("の", "", null, "");
+        List<Book> actual = bookService.findBy("の", "", null, "");
         assertThat(actual).isEqualTo(allBooks);
-        verify(bookMapper).findBy("", "の", null);
+        verify(bookMapper).findBy("の", "", null, "");
+    }
+
+    @Test
+    public void 指定した文字列を含む発売日に該当する全ての本のデータを取得() {
+        List<Book> allBooks = List.of(
+                new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"));
+
+        doReturn(allBooks).when(bookMapper).findBy("", "2016-06", null, "");
+        List<Book> actual = bookService.findBy("", "2016-06", null, "");
+        assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy("", "2016-06", null, "");
     }
 
     @Test
@@ -76,10 +76,10 @@ class BookServiceTest {
                 new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"),
                 new Book(3, "ビブリア古書堂の事件手帖・1", LocalDate.of(2011, 3, 25), true, 3, "小説"));
 
-        doReturn(allBooks).when(bookMapper).findBy("", "", true);
-        List<Book> actual = bookService.findBy("", "", true);
+        doReturn(allBooks).when(bookMapper).findBy("", "", true, null);
+        List<Book> actual = bookService.findBy("", "", true, null);
         assertThat(actual).isEqualTo(allBooks);
-        verify(bookMapper).findBy("", "", true);
+        verify(bookMapper).findBy("", "", true, null);
     }
 
     @Test
@@ -87,20 +87,31 @@ class BookServiceTest {
         List<Book> allBooks = List.of(
                 new Book(2, "鬼滅の刃・1", LocalDate.of(2016, 6, 8), false, 1, "漫画"));
 
-        doReturn(allBooks).when(bookMapper).findBy("", "", false);
-        List<Book> actual = bookService.findBy("", "", false);
+        doReturn(allBooks).when(bookMapper).findBy("", "", false, null);
+        List<Book> actual = bookService.findBy("", "", false, null);
         assertThat(actual).isEqualTo(allBooks);
-        verify(bookMapper).findBy("", "", false);
+        verify(bookMapper).findBy("", "", false, null);
+    }
+
+    @Test
+    public void 指定した文字列を含むカテゴリーに該当する全ての本のデータを取得() {
+        List<Book> allBooks = List.of(
+                new Book(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2, "ライトノベル"));
+
+        doReturn(allBooks).when(bookMapper).findBy(" ", "", null, "ラ");
+        List<Book> actual = bookService.findBy(" ", "", null, "ラ");
+        assertThat(actual).isEqualTo(allBooks);
+        verify(bookMapper).findBy(" ", "", null, "ラ");
     }
 
     @Test
     public void 指定した文字列を含むデータが存在しないとき空のデータを返す() {
         List<Book> allBooks = List.of(new Book[0]);
 
-        doReturn(allBooks).when(bookMapper).findBy("no", " ", null);
-        List<Book> actual = bookService.findBy("no", " ", null);
+        doReturn(allBooks).when(bookMapper).findBy("no", " ", null, "い");
+        List<Book> actual = bookService.findBy("no", " ", null, "い");
         assertThat(actual).isEqualTo(allBooks);
-        verify(bookMapper).findBy("no", " ", null);
+        verify(bookMapper).findBy("no", " ", null, "い");
     }
 
     @Test

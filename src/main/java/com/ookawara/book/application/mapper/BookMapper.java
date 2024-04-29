@@ -22,9 +22,10 @@ public interface BookMapper {
     List<Book> findAll();
 
     @SelectProvider(BookSqlProvider.class)
-    List<Book> findBy(@Param("category") String category,
-                      @Param("name") String name,
-                      @Param("isPurchased") Boolean isPurchased);
+    List<Book> findBy(@Param("name") String name,
+                      @Param("releaseDate") String releaseDate,
+                      @Param("isPurchased") Boolean isPurchased,
+                      @Param("category") String category);
 
     @Select("select * from books join categories on books.category_id = categories.category_id where book_id = #{bookId}")
     Optional<Book> findByBookId(int bookId);

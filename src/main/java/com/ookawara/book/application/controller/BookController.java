@@ -8,6 +8,7 @@ import com.ookawara.book.application.controller.response.CategoryResponse;
 import com.ookawara.book.application.entity.Book;
 import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.service.BookService;
+import com.ookawara.book.application.util.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,10 +34,12 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<Book> getBooksAllData(@RequestParam(required = false, defaultValue = "") String category,
-                                      @RequestParam(required = false, defaultValue = "") String name,
-                                      @RequestParam(required = false, defaultValue = "") Boolean isPurchased) {
-        return bookService.findBy(category, name, isPurchased);
+    public List<Book> getBooksAllData(@RequestParam(required = false, defaultValue = "") String name,
+                                      @RequestParam(required = false, defaultValue = "") String releaseDate,
+                                      @RequestParam(required = false, defaultValue = "") Boolean isPurchased,
+                                      @RequestParam(required = false, defaultValue = "") String category) {
+        DateTimeFormat formattedReleaseDate = new DateTimeFormat(releaseDate);
+        return bookService.findBy(name, formattedReleaseDate.getFormatCheck(), isPurchased, category);
     }
 
     @GetMapping("/book/{bookId}")

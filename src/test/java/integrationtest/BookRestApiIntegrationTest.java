@@ -72,27 +72,6 @@ class BookRestApiIntegrationTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
-    void クエリパラメーターで指定した文字列を含むカテゴリーに該当する全ての本のデータを取得できること() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/books?category=ノ"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("""
-                        [
-                           {
-                               "bookId": 1,
-                               "name": "ノーゲーム・ノーライフ・1",
-                               "releaseDate": 2012-04-30,
-                               "isPurchased": true,
-                               "categoryId": 2,
-                               "category": "ライトノベル"
-                           }
-                        ]
-                        """
-                ));
-    }
-
-    @Test
-    @DataSet("datasets/books.yml")
-    @Transactional
     void クエリパラメーターで指定した文字列を含む書籍名に該当する全ての本のデータを取得できること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/books?name=の"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -117,6 +96,107 @@ class BookRestApiIntegrationTest {
                         ]
                         """
                 ));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列の年月日を含む発売日に該当する全ての本のデータを取得できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books?releaseDate=2016-06-08"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [
+                           {
+                               "bookId": 2,
+                               "name": "鬼滅の刃・1",
+                               "releaseDate": 2016-06-08,
+                               "isPurchased": false,
+                               "categoryId": 1,
+                               "category": "漫画"
+                           }
+                        ]
+                        """
+                ));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列の年月日が存在しない日付のときに400が返されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/books?releaseDate=2021-02-29"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "400",
+                    "error": "Bad Request",
+                    "message": "存在する日付を入力してください。",
+                    "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列の年月を含む発売日に該当する全ての本のデータを取得できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books?releaseDate=2016-06"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [
+                           {
+                               "bookId": 2,
+                               "name": "鬼滅の刃・1",
+                               "releaseDate": 2016-06-08,
+                               "isPurchased": false,
+                               "categoryId": 1,
+                               "category": "漫画"
+                           }
+                        ]
+                        """
+                ));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列の年を含む発売日に該当する全ての本のデータを取得できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books?releaseDate=2016"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [
+                           {
+                               "bookId": 2,
+                               "name": "鬼滅の刃・1",
+                               "releaseDate": 2016-06-08,
+                               "isPurchased": false,
+                               "categoryId": 1,
+                               "category": "漫画"
+                           }
+                        ]
+                        """
+                ));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列の発売日が指定されたフォーマットではないときに400が返されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/books?releaseDate=2021/02/29"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "400",
+                    "error": "Bad Request",
+                    "message": "YYYY-MM-DD の形式（例：2000-01-01）で年か、年月か、年月日を指定してください。",
+                    "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
     }
 
     @Test
@@ -163,6 +243,27 @@ class BookRestApiIntegrationTest {
                                "isPurchased": false,
                                "categoryId": 1,
                                "category": "漫画"
+                           }
+                        ]
+                        """
+                ));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
+    void クエリパラメーターで指定した文字列を含むカテゴリーに該当する全ての本のデータを取得できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books?category=ノ"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        [
+                           {
+                               "bookId": 1,
+                               "name": "ノーゲーム・ノーライフ・1",
+                               "releaseDate": 2012-04-30,
+                               "isPurchased": true,
+                               "categoryId": 2,
+                               "category": "ライトノベル"
                            }
                         ]
                         """
@@ -497,7 +598,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "400",
                     "error": "Bad Request",
-                    "message": "yyyy/MM/dd の形式（例：2000/01/01）で存在する日付を入力してください。",
+                    "message": "YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください。",
                     "path": "/books/2"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true

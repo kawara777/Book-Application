@@ -22,11 +22,11 @@ public class BookService {
         this.bookMapper = bookMapper;
     }
 
-    public List<Book> findBy(String category, String name, Boolean isPurchased) {
-        if (category.isEmpty() && name.isEmpty() && isPurchased == null) {
+    public List<Book> findBy(String name, String releaseDate, Boolean isPurchased, String category) {
+        if (name.isEmpty() && releaseDate.isEmpty() && isPurchased == null && category.isEmpty()) {
             return bookMapper.findAll();
         } else {
-            return bookMapper.findBy(category, name, isPurchased);
+            return bookMapper.findBy(name, releaseDate, isPurchased, category);
         }
     }
 
