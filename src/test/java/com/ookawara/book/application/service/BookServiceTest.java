@@ -126,7 +126,7 @@ class BookServiceTest {
         doReturn(Optional.empty()).when(bookMapper).findByBookId(0);
         assertThatThrownBy(() -> bookService.findBook(0))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("book：" + 0 + " のデータはありません。");
+                .hasMessage("bookId：" + 0 + " のデータはありません");
         verify(bookMapper).findByBookId(0);
     }
 
@@ -143,7 +143,7 @@ class BookServiceTest {
         doReturn(Optional.empty()).when(bookMapper).findByCategoryId(0);
         assertThatThrownBy(() -> bookService.findCategory(0))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("category：" + 0 + " のデータはありません。");
+                .hasMessage("categoryId：" + 0 + " のデータはありません");
         verify(bookMapper).findByCategoryId(0);
     }
 
@@ -167,7 +167,7 @@ class BookServiceTest {
                 .when(bookMapper).findBookBy("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(ResourceDuplicateException.class)
-                .hasMessage("すでに登録されています。");
+                .hasMessage("すでに登録されています");
         verify(bookMapper).findByCategoryId(2);
         verify(bookMapper).findBookBy("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2);
     }
@@ -177,7 +177,7 @@ class BookServiceTest {
         doReturn(Optional.empty()).when(bookMapper).findByCategoryId(999999999);
         assertThatThrownBy(() -> bookService.createBook("ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 999999999))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("categoryId：" + 999999999 + " のデータがありません。");
+                .hasMessage("categoryId：" + 999999999 + " のデータがありません");
         verify(bookMapper).findByCategoryId(999999999);
     }
 
@@ -196,7 +196,7 @@ class BookServiceTest {
                 .when(bookMapper).findCategory("漫画");
         assertThatThrownBy(() -> bookService.createCategory("漫画"))
                 .isInstanceOf(ResourceDuplicateException.class)
-                .hasMessage("すでに登録されています。");
+                .hasMessage("すでに登録されています");
         verify(bookMapper).findCategory("漫画");
     }
 
@@ -236,7 +236,7 @@ class BookServiceTest {
         assertThatThrownBy(
                 () -> bookService.updateBook(999999999, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 2))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("book：999999999 のデータはありません。");
+                .hasMessage("bookId：999999999 のデータはありません");
         verify(bookMapper).findByBookId(999999999);
     }
 
@@ -248,7 +248,7 @@ class BookServiceTest {
         assertThatThrownBy(
                 () -> bookService.updateBook(1, "ノーゲーム・ノーライフ・1", LocalDate.of(2012, 4, 30), true, 999999999))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("categoryId：999999999 のデータがありません。");
+                .hasMessage("categoryId：999999999 のデータがありません");
         verify(bookMapper).findByBookId(1);
         verify(bookMapper).findByCategoryId(999999999);
     }
@@ -269,7 +269,7 @@ class BookServiceTest {
         doReturn(Optional.empty()).when(bookMapper).findByBookId(100);
         assertThatThrownBy(() -> bookService.deleteBook(100))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("book：100 のデータはありません。");
+                .hasMessage("bookId：100 のデータはありません");
         verify(bookMapper).findByBookId(100);
     }
 }
