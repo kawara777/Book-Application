@@ -18,16 +18,16 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 SELECT("*");
                 FROM("books");
                 JOIN("categories on books.category_id = categories.category_id");
-                if (name != null && !name.isEmpty()) {
+                if (Objects.nonNull(name) && !name.isEmpty()) {
                     WHERE("name like concat('%',#{name},'%')");
                 }
                 if (Objects.nonNull(releaseDate) && !releaseDate.isBlank()) {
                     WHERE("release_date like concat('%',#{releaseDate},'%')");
                 }
-                if (isPurchased != null) {
+                if (Objects.nonNull(isPurchased)) {
                     WHERE("is_purchased = #{isPurchased}");
                 }
-                if (category != null && !category.isEmpty()) {
+                if (Objects.nonNull(category) && !category.isEmpty()) {
                     WHERE("category like concat('%',#{category},'%')");
                 }
             }
@@ -40,11 +40,11 @@ public class BookSqlProvider implements ProviderMethodResolver {
                              @Param("categoryId") int categoryId) {
         return new SQL() {
             {
-                if (name != null && !name.isBlank() && releaseDate != null) {
+                if (Objects.nonNull(name) && !name.isBlank() && Objects.nonNull(releaseDate)) {
                     SELECT("*");
                     FROM("books");
                     WHERE("name = #{name} and release_date = #{releaseDate}");
-                    if (isPurchased != null) {
+                    if (Objects.nonNull(isPurchased)) {
                         WHERE("is_purchased = #{isPurchased}");
                     } else {
                         WHERE("is_purchased = 0");
@@ -65,16 +65,16 @@ public class BookSqlProvider implements ProviderMethodResolver {
         return new SQL() {
             {
                 UPDATE("books");
-                if (book.getName() != null && !book.getName().isBlank()) {
+                if (Objects.nonNull(book.getName()) && !book.getName().isBlank()) {
                     SET("name = #{name}");
                 }
-                if (book.getReleaseDate() != null) {
+                if (Objects.nonNull(book.getReleaseDate())) {
                     SET("release_date = #{releaseDate}");
                 }
-                if (book.getIsPurchased() != null) {
+                if (Objects.nonNull(book.getIsPurchased())) {
                     SET("is_purchased = #{isPurchased}");
                 }
-                if (book.getCategoryId() != null) {
+                if (Objects.nonNull(book.getCategoryId())) {
                     if (book.getCategoryId() >= 1) {
                         SET("category_id = #{categoryId}");
                     } else {

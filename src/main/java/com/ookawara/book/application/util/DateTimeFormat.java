@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Objects;
 
 public class DateTimeFormat {
 
@@ -28,7 +29,7 @@ public class DateTimeFormat {
     }
 
     public String getFormatCheck() {
-        if (format != null && !format.isBlank()) {
+        if (Objects.nonNull(format) && !format.isBlank()) {
             if (format.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
                 try {
                     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");

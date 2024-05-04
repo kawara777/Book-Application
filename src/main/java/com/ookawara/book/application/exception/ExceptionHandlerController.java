@@ -15,9 +15,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleBookNotFoundException(
-            BookNotFoundException e, HttpServletRequest request) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleResourceNotFoundException(
+            ResourceNotFoundException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
@@ -29,23 +29,10 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleCategoryNotFoundException(
-            CategoryNotFoundException e, HttpServletRequest request) {
 
-        Map<String, String> body = Map.of(
-                "timestamp", ZonedDateTime.now().toString(),
-                "status", String.valueOf(HttpStatus.NOT_FOUND.value()),
-                "error", HttpStatus.NOT_FOUND.getReasonPhrase(),
-                "message", e.getMessage(),
-                "path", request.getRequestURI());
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(BookDuplicateException.class)
+    @ExceptionHandler(ResourceDuplicateException.class)
     public ResponseEntity<Map<String, String>> handleBookDuplicateException(
-            BookDuplicateException e, HttpServletRequest request) {
+            ResourceDuplicateException e, HttpServletRequest request) {
 
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
@@ -57,19 +44,6 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(CategoryDuplicateException.class)
-    public ResponseEntity<Map<String, String>> handleCategoryDuplicateException(
-            CategoryDuplicateException e, HttpServletRequest request) {
-
-        Map<String, String> body = Map.of(
-                "timestamp", ZonedDateTime.now().toString(),
-                "status", String.valueOf(HttpStatus.CONFLICT.value()),
-                "error", HttpStatus.CONFLICT.getReasonPhrase(),
-                "message", e.getMessage(),
-                "path", request.getRequestURI());
-
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(
