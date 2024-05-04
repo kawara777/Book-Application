@@ -34,34 +34,34 @@ public class BookService {
         if (book.isPresent()) {
             return book.get();
         } else {
-            throw new ResourceNotFoundException("book：" + bookId + " のデータはありません。");
+            throw new ResourceNotFoundException("bookId：" + bookId + " のデータはありません");
         }
 
     }
 
     public Category findCategory(int categoryId) {
         return bookMapper.findByCategoryId(categoryId).orElseThrow(
-                () -> new ResourceNotFoundException("category：" + categoryId + " のデータはありません。"));
+                () -> new ResourceNotFoundException("categoryId：" + categoryId + " のデータはありません"));
     }
 
     public Book createBook(String name, LocalDate releaseDate, Boolean isPurchased, int categoryId) {
         if (bookMapper.findByCategoryId(categoryId).isPresent()) {
             Book book = new Book(name, releaseDate, isPurchased, categoryId);
             if (bookMapper.findBookBy(book.getName(), book.getReleaseDate(), book.getIsPurchased(), book.getCategoryId()).isPresent()) {
-                throw new ResourceDuplicateException("すでに登録されています。");
+                throw new ResourceDuplicateException("すでに登録されています");
             } else {
                 bookMapper.insertBook(book);
                 return book;
             }
         } else {
-            throw new ResourceNotFoundException("categoryId：" + categoryId + " のデータがありません。");
+            throw new ResourceNotFoundException("categoryId：" + categoryId + " のデータがありません");
         }
     }
 
     public Category createCategory(String category) {
         Category categoryName = new Category(category);
         if (bookMapper.findCategory(categoryName.getCategory()).isPresent()) {
-            throw new ResourceDuplicateException("すでに登録されています。");
+            throw new ResourceDuplicateException("すでに登録されています");
         } else {
             bookMapper.insertCategory(categoryName);
             return categoryName;
@@ -70,9 +70,9 @@ public class BookService {
 
     public Book updateBook(int bookId, String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
         bookMapper.findByBookId(bookId).orElseThrow(
-                () -> new ResourceNotFoundException("book：" + bookId + " のデータはありません。"));
+                () -> new ResourceNotFoundException("bookId：" + bookId + " のデータはありません"));
         if (Objects.nonNull(categoryId) && bookMapper.findByCategoryId(categoryId).isEmpty()) {
-            throw new ResourceNotFoundException("categoryId：" + categoryId + " のデータがありません。");
+            throw new ResourceNotFoundException("categoryId：" + categoryId + " のデータがありません");
         } else {
             Book book = new Book(bookId, name, releaseDate, isPurchased, categoryId);
             bookMapper.updateBook(book);
@@ -82,7 +82,7 @@ public class BookService {
 
     public void deleteBook(int bookId) {
         bookMapper.findByBookId(bookId).orElseThrow(
-                () -> new ResourceNotFoundException("book：" + bookId + " のデータはありません。"));
+                () -> new ResourceNotFoundException("bookId：" + bookId + " のデータはありません"));
         bookMapper.deleteBook(bookId);
     }
 }
