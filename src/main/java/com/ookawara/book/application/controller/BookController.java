@@ -42,12 +42,12 @@ public class BookController {
         return bookService.findBy(name, formattedReleaseDate.getFormatCheck(), isPurchased, category);
     }
 
-    @GetMapping("/book/{bookId}")
+    @GetMapping("/books/{bookId}")
     public Book getBook(@PathVariable int bookId) {
         return bookService.findBook(bookId);
     }
 
-    @GetMapping("/category/{categoryId}")
+    @GetMapping("/categories/{categoryId}")
     public Category getCategory(@PathVariable int categoryId) {
         return bookService.findCategory(categoryId);
     }
@@ -56,7 +56,7 @@ public class BookController {
     public ResponseEntity<BookResponse> postBook(@RequestBody @Validated BookCreateRequest bookRequest, UriComponentsBuilder uriBuilder) {
         Book book = bookService.createBook(bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
         URI location = uriBuilder.path("/book/{id}").buildAndExpand(book.getBookId()).toUri();
-        BookResponse body = new BookResponse("正常に登録されました。");
+        BookResponse body = new BookResponse("正常に登録されました");
         return ResponseEntity.created(location).body(body);
     }
 
@@ -65,21 +65,21 @@ public class BookController {
     public ResponseEntity<CategoryResponse> postCategory(@RequestBody @Validated CategoryRequest categoryRequest, UriComponentsBuilder uriBuilder) {
         Category category = bookService.createCategory(categoryRequest.getCategory());
         URI location = uriBuilder.path("/category/{categoryId}").buildAndExpand(category.getCategoryId()).toUri();
-        CategoryResponse body = new CategoryResponse("正常に登録されました。");
+        CategoryResponse body = new CategoryResponse("正常に登録されました");
         return ResponseEntity.created(location).body(body);
     }
 
     @PatchMapping("/books/{bookId}")
     public ResponseEntity<BookResponse> postBook(@PathVariable int bookId, @RequestBody @Validated BookUpdateRequest bookRequest) {
         bookService.updateBook(bookId, bookRequest.getName(), bookRequest.getReleaseDate(), bookRequest.getIsPurchased(), bookRequest.getCategoryId());
-        BookResponse body = new BookResponse("正常に更新されました。");
+        BookResponse body = new BookResponse("正常に更新されました");
         return ResponseEntity.ok(body);
     }
 
-    @DeleteMapping("book/{bookId}")
+    @DeleteMapping("/books/{bookId}")
     public ResponseEntity<BookResponse> deleteBook(@PathVariable int bookId) {
         bookService.deleteBook(bookId);
-        BookResponse body = new BookResponse("正常に削除されました。");
+        BookResponse body = new BookResponse("正常に削除されました");
         return ResponseEntity.ok(body);
     }
 }

@@ -21,7 +21,7 @@ public class DateTimeFormat {
             try {
                 return LocalDate.parse(format, DateTimeFormatter.ofPattern("uuuu/MM/dd").withResolverStyle(ResolverStyle.STRICT));
             } catch (DateTimeParseException e) {
-                throw new DateFormatException("YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください。");
+                throw new DateFormatException("YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください");
             }
         } else {
             return null;
@@ -38,12 +38,12 @@ public class DateTimeFormat {
                             .parse(format, LocalDate::from);
                     return localDateFormat.format(dateTimeFormatter);
                 } catch (DateTimeParseException e) {
-                    throw new DateFormatException("存在する日付を入力してください。");
+                    throw new DateFormatException("存在する日付を入力してください");
                 }
             } else if (format.matches("^[0-9]{4}-[0-9]{2}$") || format.matches("^[0-9]{4}$")) {
                 return format;
             } else {
-                throw new DateFormatException("YYYY-MM-DD の形式（例：2000-01-01）で年か、年月か、年月日を指定してください。");
+                throw new DateFormatException("YYYY-MM-DD の形式（例：2000-01-01）で年か、年月か、年月日を指定してください");
             }
         } else {
             return "";

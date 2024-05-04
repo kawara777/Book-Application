@@ -496,7 +496,7 @@ components:
           example:
             name: 書籍名を入力してください
             releaseDate: YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください
-            categoryI: カテゴリーIDを入力してください
+            categoryId: カテゴリーIDを入力してください
         path:
           type: string
           example: 指定したパス

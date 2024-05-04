@@ -131,7 +131,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "400",
                     "error": "Bad Request",
-                    "message": "存在する日付を入力してください。",
+                    "message": "存在する日付を入力してください",
                     "path": "/books"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -192,7 +192,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "400",
                     "error": "Bad Request",
-                    "message": "YYYY-MM-DD の形式（例：2000-01-01）で年か、年月か、年月日を指定してください。",
+                    "message": "YYYY-MM-DD の形式（例：2000-01-01）で年か、年月か、年月日を指定してください",
                     "path": "/books"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -286,7 +286,7 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 存在する本のIDを指定したときに正常に本のデータを返すこと() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/book/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
@@ -305,7 +305,7 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 存在しない本のIDを指定したときにステータスコードが404となり例外メッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.get("/book/0"))
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/books/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         JSONAssert.assertEquals("""
@@ -313,8 +313,8 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "book：0 のデータはありません。",
-                    "path": "/book/0"
+                    "message": "bookId：0 のデータはありません",
+                    "path": "/books/0"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
@@ -324,7 +324,7 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 存在するカテゴリーのIDを指定したときに正常にカテゴリーのデータを返すこと() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/categories/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
@@ -338,7 +338,7 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 存在しないカテゴリーのIDを指定したときにステータスコードが404となり例外メッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.get("/category/0"))
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/categories/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         JSONAssert.assertEquals("""
@@ -346,8 +346,8 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "category：0 のデータはありません。",
-                    "path": "/category/0"
+                    "message": "categoryId：0 のデータはありません",
+                    "path": "/categories/0"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
@@ -373,7 +373,7 @@ class BookRestApiIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                            "message": "正常に登録されました。"
+                            "message": "正常に登録されました"
                         }
                         """));
     }
@@ -399,7 +399,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "409",
                     "error": "Conflict",
-                    "message": "すでに登録されています。",
+                    "message": "すでに登録されています",
                     "path": "/books"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -427,7 +427,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "categoryId：100 のデータがありません。",
+                    "message": "categoryId：100 のデータがありません",
                     "path": "/books"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -449,7 +449,7 @@ class BookRestApiIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                            "message": "正常に登録されました。"
+                            "message": "正常に登録されました"
                         }
                         """));
     }
@@ -472,7 +472,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "409",
                     "error": "Conflict",
-                    "message": "すでに登録されています。",
+                    "message": "すでに登録されています",
                     "path": "/categories"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -499,7 +499,7 @@ class BookRestApiIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                            "message": "正常に更新されました。"
+                            "message": "正常に更新されました"
                         }
                         """));
     }
@@ -519,7 +519,7 @@ class BookRestApiIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                            "message": "正常に更新されました。"
+                            "message": "正常に更新されました"
                         }
                         """));
     }
@@ -545,7 +545,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "book：0 のデータはありません。",
+                    "message": "bookId：0 のデータはありません",
                     "path": "/books/0"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -573,7 +573,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "categoryId：999999999 のデータがありません。",
+                    "message": "categoryId：999999999 のデータがありません",
                     "path": "/books/2"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -598,7 +598,7 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "400",
                     "error": "Bad Request",
-                    "message": "YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください。",
+                    "message": "YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください",
                     "path": "/books/2"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
@@ -610,11 +610,11 @@ class BookRestApiIntegrationTest {
     @ExpectedDataSet("datasets/delete/delete-books.yml")
     @Transactional
     void 存在する本のIDを指定したときに正常に本のデータが削除されること() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/book/2"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                            "message": "正常に削除されました。"
+                            "message": "正常に削除されました"
                         }
                         """));
     }
@@ -623,7 +623,7 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @Transactional
     void 削除時に存在しない本のIDを指定したときステータスコードが404となり例外メッセージが返されること() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/book/0"))
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/books/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         JSONAssert.assertEquals("""
@@ -631,8 +631,8 @@ class BookRestApiIntegrationTest {
                     "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
                     "status": "404",
                     "error": "Not Found",
-                    "message": "book：0 のデータはありません。",
-                    "path": "/book/0"
+                    "message": "bookId：0 のデータはありません",
+                    "path": "/books/0"
                 }
                 """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
         )));
