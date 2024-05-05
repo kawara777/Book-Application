@@ -191,7 +191,7 @@ paths:
       tags:
         - book
       summary: 書籍情報の更新
-      description: 指定したIDの書籍情報を更新する。指定項目１〜３つのみでも実行可能
+      description: 指定したIDの書籍情報を更新する。項目の指定が可能
       parameters:
         - name: bookId
           in: path
