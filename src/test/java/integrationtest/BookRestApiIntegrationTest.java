@@ -508,12 +508,55 @@ class BookRestApiIntegrationTest {
     @DataSet("datasets/books.yml")
     @ExpectedDataSet(value = "datasets/update/update-books-name.yml")
     @Transactional
-    void 書籍名のみ正常に更新できること() throws Exception {
+    void 書籍データが1項目のみでも正常に更新できること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
                                     "name": "鬼滅の刃 1"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に更新されました"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-twoColumns.yml")
+    @Transactional
+    void 書籍データが2項目のみでも正常に更新できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016/07/08"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "message": "正常に更新されました"
+                        }
+                        """));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @ExpectedDataSet(value = "datasets/update/update-books-threeColumns.yml")
+    @Transactional
+    void 書籍データが3項目のみでも正常に更新できること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/books/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃 1",
+                                    "releaseDate": "2016/07/08",
+                                    "isPurchased": true
                                 }
                                 """))
                 .andExpect(MockMvcResultMatchers.status().isOk())
