@@ -25,7 +25,7 @@ class BookCreateRequestTest {
 
     @Test
     void nameがnullのときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest(null, LocalDate.now(), false, 1);
+        BookCreateRequest bookRequest = new BookCreateRequest(null, "2000/01/01", false, 1);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
@@ -35,7 +35,7 @@ class BookCreateRequestTest {
 
     @Test
     void nameが空文字のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest("", LocalDate.now(), false, 1);
+        BookCreateRequest bookRequest = new BookCreateRequest("", "2000/01/01", false, 1);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
@@ -45,22 +45,12 @@ class BookCreateRequestTest {
 
     @Test
     void nameが半角スペースのみのときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest(" ", LocalDate.now(), false, 1);
+        BookCreateRequest bookRequest = new BookCreateRequest(" ", "2000/01/01", false, 1);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
                 .containsExactlyInAnyOrder(tuple("name", "書籍名を入力してください"));
-    }
-
-    @Test
-    void releaseDateが未来の年月日のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.of(9999, 12, 31), false, 1);
-        Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
-        assertThat(violations).hasSize(1);
-        assertThat(violations)
-                .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
-                .containsExactlyInAnyOrder(tuple("releaseDate", "現在もしくは過去の日付を入力してください"));
     }
 
     @Test
@@ -74,8 +64,28 @@ class BookCreateRequestTest {
     }
 
     @Test
+    void releaseDateが空文字のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
+        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", "", false, 1);
+        Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
+        assertThat(violations).hasSize(1);
+        assertThat(violations)
+                .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
+                .containsExactlyInAnyOrder(tuple("releaseDate", "発売日を入力してください"));
+    }
+
+    @Test
+    void releaseDateが半角スペースのみのときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
+        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", " ", false, 1);
+        Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
+        assertThat(violations).hasSize(1);
+        assertThat(violations)
+                .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
+                .containsExactlyInAnyOrder(tuple("releaseDate", "発売日を入力してください"));
+    }
+
+    @Test
     void categoryIdがnullのときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.now(), false, null);
+        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", "2000/01/01", false, null);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
@@ -85,7 +95,7 @@ class BookCreateRequestTest {
 
     @Test
     void categoryIdが1より小さい数字のときバリーデーションエラーとなりエラーメッセージが設定したものになっていること() {
-        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.now(), false, 0);
+        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", "2000/01/01", false, 0);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).hasSize(1);
         assertThat(violations)
@@ -108,7 +118,7 @@ class BookCreateRequestTest {
 
     @Test
     void 全てのフィールドに正常値があるときバリデーションエラーとならないこと() {
-        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", LocalDate.now(), false, 1);
+        BookCreateRequest bookRequest = new BookCreateRequest("鬼滅の刃・1", "2000/01/01", false, 1);
         Set<ConstraintViolation<BookCreateRequest>> violations = validator.validate(bookRequest);
         assertThat(violations).isEmpty();
     }

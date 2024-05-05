@@ -1,5 +1,6 @@
 package com.ookawara.book.application.controller.request;
 
+import com.ookawara.book.application.util.DateTimeFormat;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,9 +12,8 @@ public class BookCreateRequest {
     @NotBlank(message = "書籍名を入力してください")
     private String name;
 
-    @NotNull(message = "発売日を入力してください")
-    @PastOrPresent(message = "現在もしくは過去の日付を入力してください")
-    private LocalDate releaseDate;
+    @NotBlank(message = "発売日を入力してください")
+    private String releaseDate;
 
     private Boolean isPurchased;
 
@@ -21,7 +21,7 @@ public class BookCreateRequest {
     @Min(value = 1, message = "1 以上の値にしてください")
     private Integer categoryId;
 
-    public BookCreateRequest(String name, LocalDate releaseDate, Boolean isPurchased, Integer categoryId) {
+    public BookCreateRequest(String name, String releaseDate, Boolean isPurchased, Integer categoryId) {
         this.name = name;
         this.releaseDate = releaseDate;
         this.isPurchased = isPurchased;
@@ -33,7 +33,8 @@ public class BookCreateRequest {
     }
 
     public LocalDate getReleaseDate() {
-        return releaseDate;
+        DateTimeFormat dateTimeFormat = new DateTimeFormat(releaseDate);
+        return dateTimeFormat.getFormat();
     }
 
     public Boolean getIsPurchased() {

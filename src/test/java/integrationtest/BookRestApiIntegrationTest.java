@@ -365,7 +365,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "鬼滅の刃・2",
-                                    "releaseDate": "2016-08-09",
+                                    "releaseDate": "2016/08/09",
                                     "isPurchased": false,
                                     "categoryId": 1
                                 }
@@ -381,13 +381,41 @@ class BookRestApiIntegrationTest {
     @Test
     @DataSet("datasets/books.yml")
     @Transactional
+    void 登録する書籍データの発売日にフォーマットが違う文字列を指定したとき400となり例外が発生すること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "鬼滅の刃・2",
+                                    "releaseDate": "2016-08-09",
+                                    "isPurchased": false,
+                                    "categoryId": 1
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                {
+                    "timestamp": "2024-01-01 00:00:00.000000+09:00[Asia/Tokyo]",
+                    "status": "400",
+                    "error": "Bad Request",
+                    "message": "YYYY/MM/DD の形式（例：2000/01/01）で存在する日付を入力してください",
+                    "path": "/books"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT, new Customization("timestamp", (o1, o2) -> true
+        )));
+    }
+
+    @Test
+    @DataSet("datasets/books.yml")
+    @Transactional
     void すでに存在する書籍データを登録したときにステータスコードが409となり設定したエラーメッセージを返すこと() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
                                     "name": "ノーゲーム・ノーライフ・1",
-                                    "releaseDate": "2012-04-30",
+                                    "releaseDate": "2012/04/30",
                                     "isPurchased": true,
                                     "categoryId": 2
                                 }
@@ -415,7 +443,7 @@ class BookRestApiIntegrationTest {
                         .content("""
                                 {
                                     "name": "ノーゲーム・ノーライフ・1",
-                                    "releaseDate": "2012-04-30",
+                                    "releaseDate": "2012/04/30",
                                     "isPurchased": true,
                                     "categoryId": 100
                                 }
