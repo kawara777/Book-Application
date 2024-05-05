@@ -247,12 +247,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
-        "409":
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duplicate'
     delete:
       tags:
         - book
@@ -434,12 +428,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
-        "409":
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Duplicate'
     delete:
       tags:
         - category
