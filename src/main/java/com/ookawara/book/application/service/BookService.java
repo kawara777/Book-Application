@@ -5,6 +5,7 @@ import com.ookawara.book.application.entity.Category;
 import com.ookawara.book.application.exception.ResourceDuplicateException;
 import com.ookawara.book.application.exception.ResourceNotFoundException;
 import com.ookawara.book.application.mapper.BookMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class BookService {
     }
 
     public List<Book> findBy(String name, String releaseDate, Boolean isPurchased, String category) {
-        if (name.isEmpty() && releaseDate.isEmpty() && Objects.isNull(isPurchased) && category.isEmpty()) {
+        if (StringUtils.isAllEmpty(name, releaseDate, category) && Objects.isNull(isPurchased)) {
             return bookMapper.findAll();
         } else {
             return bookMapper.findBy(name, releaseDate, isPurchased, category);

@@ -1,6 +1,7 @@
 package com.ookawara.book.application.mapper;
 
 import com.ookawara.book.application.entity.Book;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
@@ -18,16 +19,16 @@ public class BookSqlProvider implements ProviderMethodResolver {
                 SELECT("*");
                 FROM("books");
                 JOIN("categories on books.category_id = categories.category_id");
-                if (Objects.nonNull(name) && !name.isEmpty()) {
+                if (StringUtils.isNotEmpty(name)) {
                     WHERE("name like concat('%',#{name},'%')");
                 }
-                if (Objects.nonNull(releaseDate) && !releaseDate.isBlank()) {
+                if (StringUtils.isNotBlank(releaseDate)) {
                     WHERE("release_date like concat('%',#{releaseDate},'%')");
                 }
                 if (Objects.nonNull(isPurchased)) {
                     WHERE("is_purchased = #{isPurchased}");
                 }
-                if (Objects.nonNull(category) && !category.isEmpty()) {
+                if (StringUtils.isNotEmpty(category)) {
                     WHERE("category like concat('%',#{category},'%')");
                 }
             }
@@ -40,7 +41,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
                              @Param("categoryId") int categoryId) {
         return new SQL() {
             {
-                if (Objects.nonNull(name) && !name.isBlank() && Objects.nonNull(releaseDate)) {
+                if (StringUtils.isNotBlank(name) && Objects.nonNull(releaseDate)) {
                     SELECT("*");
                     FROM("books");
                     WHERE("name = #{name} and release_date = #{releaseDate}");
@@ -65,7 +66,7 @@ public class BookSqlProvider implements ProviderMethodResolver {
         return new SQL() {
             {
                 UPDATE("books");
-                if (Objects.nonNull(book.getName()) && !book.getName().isBlank()) {
+                if (StringUtils.isNotBlank(book.getName())) {
                     SET("name = #{name}");
                 }
                 if (Objects.nonNull(book.getReleaseDate())) {
